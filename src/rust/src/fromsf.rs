@@ -16,10 +16,7 @@ fn sfg_to_cells(x: Robj, resolution: u8) -> Robj {
 
     let geo = sfg_to_geometry(x).geom;
     let h3geo = h3o::geom::Geometry::from_degrees(geo).unwrap();
-    let h3s = h3geo.to_cells(resolution).collect::<Vec<_>>();
-
-    h3s
-        .into_iter()
+    h3geo.to_cells(resolution)
         .map(|x| Robj::from(H3::from(x)))
         .collect::<List>()
         .set_class(vctrs_class())
