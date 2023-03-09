@@ -1,0 +1,12 @@
+[package]
+name = 'h3o'
+version = '0.1.0'
+edition = '2018'
+
+[lib]
+crate-type = [ 'staticlib' ]
+
+[dependencies]
+extendr-api = '*'
+h3o = { version = "0.3.0", features = ["geo"] }
+sfconversions = { git = "https://github.com/JosiahParry/sfconversions" }
