@@ -3,9 +3,12 @@ use extendr_api::prelude::*;
 use h3o;
 use h3o::CellIndex;
 
-mod h3;
 mod createh3;
 mod fromsf;
+mod h3;
+mod hierarchical;
+mod inspection;
+mod togeo;
 
 // every input is going to be a str from R, no pointer bisniss
 fn parse_h3str(x: &str) -> CellIndex {
@@ -14,29 +17,25 @@ fn parse_h3str(x: &str) -> CellIndex {
 }
 
 #[extendr]
-fn h3_string_to_u64(x: &str) -> u64 {
+fn h3_string_to_u64(x: &str) -> Robj {
     let x = parse_h3str(x);
     let res: u64 = x.try_into().unwrap();
-    res
+    rprintln!("{res}");
+    //let res = res as f64;
+    //rprintln!("{res}");
+    Robj::from(res).set_class(["integer64"]).unwrap()
 }
-
-
-
 
 #[extendr]
-fn h3_int_to_string(x: f64) -> String {
-    let x = x as u64;
-    let res = CellIndex::try_from(x).unwrap();
-    res.to_string()
+fn h3_int_to_string(x: u64) -> () {
+    rprintln!("{:?}", x);
 }
 
-
-#[extendr]
-fn h3_base_cell(x: &str) -> String {
-    let res = parse_h3str(x).base_cell();
-    res.to_string()
-}
-
+// #[extendr]
+// fn h3_base_cell(x: &str) -> String {
+//     let res = parse_h3str(x).base_cell();
+//     res.to_string()
+// }
 
 // Macro to generate exports.
 // This ensures exported functions are registered with R.
@@ -46,8 +45,11 @@ extendr_module! {
     use createh3;
     use h3;
     use fromsf;
+    use inspection;
+    use hierarchical;
+    use togeo;
     fn h3_string_to_u64;
     fn h3_int_to_string;
-    fn h3_base_cell;
-    
+    //fn h3_base_cell;
+
 }

@@ -30,17 +30,20 @@ impl From<Robj> for H3 {
 }
 
 pub fn vctrs_class() -> [String; 3] {
-    [String::from("H3"), String::from("vctrs_vctr"), String::from("list")]
+    [
+        String::from("H3"),
+        String::from("vctrs_vctr"),
+        String::from("list"),
+    ]
 }
 
 #[extendr]
 fn h3_to_strings(x: List) -> Strings {
-        x
-        .into_iter()
+    x.into_iter()
         .map(|(_, robj)| H3::from(robj).index.to_string())
-        .collect::<Strings>() 
+        .collect::<Strings>()
 }
-extendr_module! { 
+extendr_module! {
     mod h3;
     fn h3_to_strings;
 }

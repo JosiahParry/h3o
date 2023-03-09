@@ -429,7 +429,7 @@ dependencies = [
 [[package]]
 name = "sfconversions"
 version = "0.1.0"
-source = "git+https://github.com/JosiahParry/sfconversions#e9793ca93dbb4ca262a3eb14034d0deb5188eb39"
+source = "git+https://github.com/JosiahParry/sfconversions#1dea22d9fad0a064c5e7fb873ac41f578bacef5f"
 dependencies = [
  "extendr-api",
  "geo-types",
