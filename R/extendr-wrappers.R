@@ -58,9 +58,35 @@ is_nb_pairwise_ <- function(x, y) .Call(wrap__is_nb_pairwise_, x, y)
 
 is_nb_sparse_ <- function(x, y) .Call(wrap__is_nb_sparse_, x, y)
 
-h3_edges <- function(x, y) .Call(wrap__h3_edges, x, y)
+h3_edges_pairwise_ <- function(x, y) .Call(wrap__h3_edges_pairwise_, x, y)
 
-make_edge <- function(x, y) .Call(wrap__make_edge, x, y)
+h3_edges_sparse_ <- function(x, y) .Call(wrap__h3_edges_sparse_, x, y)
+
+is_valid_edge_ <- function(x) .Call(wrap__is_valid_edge_, x)
+
+get_directed_origin_ <- function(x) .Call(wrap__get_directed_origin_, x)
+
+get_directed_destination_ <- function(x) .Call(wrap__get_directed_destination_, x)
+
+get_directed_cells_ <- function(x) .Call(wrap__get_directed_cells_, x)
+
+h3_edges_ <- function(x) .Call(wrap__h3_edges_, x)
+
+edge_boundary_ <- function(x) .Call(wrap__edge_boundary_, x)
+
+grid_disk_fast_ <- function(x, k) .Call(wrap__grid_disk_fast_, x, k)
+
+grid_disk_safe_ <- function(x, k) .Call(wrap__grid_disk_safe_, x, k)
+
+grid_distances_ <- function(x, k) .Call(wrap__grid_distances_, x, k)
+
+grid_ring_ <- function(x, k) .Call(wrap__grid_ring_, x, k)
+
+grid_path_cells_ <- function(x, y) .Call(wrap__grid_path_cells_, x, y)
+
+grid_path_cells_size_ <- function(x, y) .Call(wrap__grid_path_cells_size_, x, y)
+
+grid_distance_ <- function(x, y) .Call(wrap__grid_distance_, x, y)
 
 H3DEdge <- new.env(parent = emptyenv())
 
