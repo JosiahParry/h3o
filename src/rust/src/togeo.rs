@@ -7,7 +7,7 @@ use sfconversions::geom::Geom;
 fn h3_to_geo_(x: List) -> Robj {
     let h3_vec = x
         .into_iter()
-        .map(|(_, x)| H3::from(x).index)
+        .map(|(_, x)| <&H3>::from_robj(&x).unwrap().index)
         .collect::<Vec<CellIndex>>();
 
     let res = h3_vec.to_geom(true).unwrap();

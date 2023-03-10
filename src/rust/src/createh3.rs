@@ -33,7 +33,8 @@ fn h3_from_points(x: List, resolution: u8) -> Robj {
 
 // boundary for a single hex
 fn h3_boundary_(x: Robj) -> Robj {
-    let h3 = H3::from(x);
+    //let h3 = <&H3>::from_robj(&x).unwrap();
+    let h3 = <&H3>::from_robj(&x).unwrap();
     let boundary = h3.index.boundary();
 
     let mut coords = boundary

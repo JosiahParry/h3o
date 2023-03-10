@@ -8,7 +8,7 @@ use h3o::CellIndex;
 fn h3_resolution(x: List) -> Vec<i8> {
     x.into_iter()
         .map(|(_, x)| {
-            let y = H3::from(x).index.resolution();
+            let y = <&H3>::from_robj(&x).unwrap().index.resolution();
             y as i8
         })
         .collect::<Vec<i8>>()
@@ -18,7 +18,7 @@ fn h3_resolution(x: List) -> Vec<i8> {
 fn h3_base_cell(x: List) -> Vec<i8> {
     x.into_iter()
         .map(|(_, x)| {
-            let cell = H3::from(x).index.base_cell();
+            let cell = <&H3>::from_robj(&x).unwrap().index.base_cell();
             let res = u8::from(cell);
             res as i8
         })
@@ -44,14 +44,14 @@ fn is_valid_h3(x: Vec<String>) -> Vec<bool> {
 #[extendr]
 fn is_res_class_iii(x: List) -> Vec<bool> {
     x.into_iter()
-        .map(|(_, x)| H3::from(x).index.resolution().is_class3())
+        .map(|(_, x)| <&H3>::from_robj(&x).unwrap().index.resolution().is_class3())
         .collect::<Vec<bool>>()
 }
 
 #[extendr]
 fn is_hexagon(x: List) -> Vec<bool> {
     x.into_iter()
-        .map(|(_, x)| H3::from(x).index.is_pentagon())
+        .map(|(_, x)| <&H3>::from_robj(&x).unwrap().index.is_pentagon())
         .collect::<Vec<bool>>()
 }
 
@@ -59,7 +59,7 @@ fn is_hexagon(x: List) -> Vec<bool> {
 #[extendr]
 fn get_face_count(x: List) -> Vec<i32> {
     x.into_iter()
-        .map(|(_, x)| H3::from(x).index.max_face_count() as i32)
+        .map(|(_, x)| <&H3>::from_robj(&x).unwrap().index.max_face_count() as i32)
         .collect::<Vec<i32>>()
 }
 

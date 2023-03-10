@@ -7,7 +7,7 @@ use std::iter::FromIterator;
 fn get_parents_(x: List, resolution: u8) -> Robj {
     let reso = match_resolution(resolution);
     x.into_iter()
-        .map(|(_, robj)| Robj::from(H3::from(H3::from(robj).index.parent(reso).unwrap())))
+        .map(|(_, robj)| Robj::from(H3::from(<&H3>::from_robj(&robj).unwrap().index.parent(reso).unwrap())))
         .collect::<List>()
         .set_class(vctrs_class())
         .unwrap()
@@ -18,7 +18,7 @@ fn get_children_(x: List, resolution: u8) -> List {
     let reso = match_resolution(resolution);
     x.into_iter()
         .map(|(_, robj)| {
-            let children = H3::from(robj).index.children(reso);
+            let children = <&H3>::from_robj(&robj).unwrap().index.children(reso);
             children
                 .map(|child| Robj::from(H3::from(child)))
                 .collect::<List>()
@@ -32,7 +32,7 @@ fn get_children_(x: List, resolution: u8) -> List {
 fn get_children_count_(x: List, resolution: u8) -> Vec<i32> {
     let reso = match_resolution(resolution);
     x.into_iter()
-        .map(|(_, robj)| H3::from(robj).index.children_count(reso) as i32)
+        .map(|(_, robj)| <&H3>::from_robj(&robj).unwrap().index.children_count(reso) as i32)
         .collect::<Vec<i32>>()
 }
 
@@ -41,7 +41,7 @@ fn get_children_center_(x: List, resolution: u8) -> Robj {
     let reso = match_resolution(resolution);
     x.into_iter()
         .map(|(_, robj)| {
-            let child = H3::from(robj).index.center_child(reso);
+            let child = <&H3>::from_robj(&robj).unwrap().index.center_child(reso);
 
             match child {
                 Some(child) => Robj::from(H3::from(child)),
@@ -57,7 +57,7 @@ fn get_children_center_(x: List, resolution: u8) -> Robj {
 fn get_children_position_(x: List, resolution: u8) -> Integers {
     let reso = match_resolution(resolution);
     let res = x.into_iter().map(|(_, robj)| {
-        let child = H3::from(robj).index.child_position(reso);
+        let child = <&H3>::from_robj(&robj).unwrap().index.child_position(reso);
 
         match child {
             Some(child) => Rint::from(child as i32),
@@ -73,7 +73,7 @@ fn get_children_at_(x: List, position: i32, resolution: u8) -> Robj {
     let reso = match_resolution(resolution);
     x.into_iter()
         .map(|(_, robj)| {
-            let child = H3::from(robj).index.child_at(position as u64, reso);
+            let child = <&H3>::from_robj(&robj).unwrap().index.child_at(position as u64, reso);
             match child {
                 Some(child) => Robj::from(H3::from(child)),
                 None => Robj::from(extendr_api::NULL),
@@ -88,7 +88,7 @@ fn get_children_at_(x: List, position: i32, resolution: u8) -> Robj {
 fn compact_cells_(x: List) -> Robj {
     let h3_vec = x
         .into_iter()
-        .map(|(_, robj)| H3::from(robj).index)
+        .map(|(_, robj)| <&H3>::from_robj(&robj).unwrap().index)
         .collect::<Vec<CellIndex>>();
 
     CellIndex::compact(h3_vec)
@@ -106,7 +106,7 @@ fn uncompact_cells_(x: List, resolution: u8) -> List {
 
     x.into_iter()
         .map(|(_, robj)| {
-            let uncompacted = CellIndex::uncompact(std::iter::once(H3::from(robj).index), reso);
+            let uncompacted = CellIndex::uncompact(std::iter::once(<&H3>::from_robj(&robj).unwrap().index), reso);
             uncompacted
                 .map(|x| Robj::from(H3::from(x)))
                 .collect::<List>()
