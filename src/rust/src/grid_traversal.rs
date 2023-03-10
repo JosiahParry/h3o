@@ -7,7 +7,7 @@ fn grid_disk_fast_(x: List, k: u32) -> List {
     x
         .into_iter()
         .map(|(_, robj)| {
-            let ind = H3::from(robj).index;
+            let ind = <&H3>::from_robj(&robj).unwrap().index;
             ind.grid_disk_fast(k)
                 .map(|x| 
                     // can be null sometimes 
@@ -30,7 +30,7 @@ fn grid_disk_safe_(x: List, k: u32) -> List {
     x
         .into_iter()
         .map(|(_, robj)| {
-            let ind = H3::from(robj).index;
+            let ind = <&H3>::from_robj(&robj).unwrap().index;
             ind.grid_disk_safe(k)
                 .map(|x| 
                     Robj::from(H3::from(x))
@@ -49,7 +49,7 @@ fn grid_distances_(x: List, k: u32) -> List {
     x
     .into_iter()
     .map(|(_, robj)| {
-        let ind = H3::from(robj).index;
+        let ind = <&H3>::from_robj(&robj).unwrap().index;
         ind.grid_disk_distances::<Vec<_>>(k)
             .into_iter()
             .map(|(_, dist)| {
@@ -65,7 +65,7 @@ fn grid_ring_(x: List, k: u32) -> List {
     x
     .into_iter()
     .map(|(_, robj)| {
-        H3::from(robj).index.grid_ring_fast(k)
+        <&H3>::from_robj(&robj).unwrap().index.grid_ring_fast(k)
             .map(|x| {
                                     // can be null sometimes 
                     // if it messed up catch it and return null
@@ -89,8 +89,8 @@ fn grid_path_cells_(x: List, y: List) -> List {
         .into_iter()
         .zip(y.into_iter())
         .map(|((_, x), (_, y))| {
-            let x = H3::from(x).index;
-            let y = H3::from(y).index;
+            let x = <&H3>::from_robj(&x).unwrap().index;
+            let y = <&H3>::from_robj(&y).unwrap().index;
             let path = x.grid_path_cells(y);
             let path = match path {
                 Ok(path) => {
@@ -120,8 +120,8 @@ fn grid_path_cells_size_(x: List, y: List) -> Integers {
         .into_iter()
         .zip(y.into_iter())
         .map(|((_, x), (_, y))| {
-            let x = H3::from(x).index;
-            let y = H3::from(y).index;
+            let x = <&H3>::from_robj(&x).unwrap().index;
+            let y = <&H3>::from_robj(&y).unwrap().index;
             let size = x.grid_path_cells_size(y);
 
             match size {
@@ -140,7 +140,7 @@ fn grid_distance_(x: List, y: List) -> Integers {
         .into_iter()
         .zip(y.into_iter())
         .map(|((_, x), (_, y))| {
-            let d = H3::from(x).index.grid_distance(H3::from(y).index);
+            let d = <&H3>::from_robj(&x).unwrap().index.grid_distance(<&H3>::from_robj(&y).unwrap().index);
             
             match d {
                 Ok(d) => Rint::from(d),
@@ -158,8 +158,8 @@ fn local_ij_(x: List, y: List) -> List {
     .into_iter()
     .zip(y.into_iter())
     .map(|((_, x), (_, y))| {
-        let x = H3::from(x).index;
-        let y = H3::from(y).index; 
+        let x = <&H3>::from_robj(&x).unwrap().index;
+        let y = <&H3>::from_robj(&y).unwrap().index; 
 
         let res = x.to_local_ij(y);
         match res {

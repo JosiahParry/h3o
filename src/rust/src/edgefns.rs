@@ -10,8 +10,9 @@ fn is_nb_pairwise_(x: List, y: List) -> Logicals {
     x.into_iter()
         .zip(y.into_iter())
         .map(|((_, x), (_, y))| {
-            let y = H3::from(y).index;
-            let x = H3::from(x).index;
+
+            let y = <&H3>::from_robj(&y).unwrap().index;
+            let x = <&H3>::from_robj(&x).unwrap().index;
             let is_nb = x.is_neighbor_with(y);
 
             match is_nb {
@@ -27,9 +28,9 @@ fn is_nb_sparse_(x: List, y: List) -> List {
     x
         .into_iter()
         .map(|(_, x)| {
-            let xh3 = H3::from(x).index;
+            let xh3 = <&H3>::from_robj(&x).unwrap().index;
             y.iter().map(|(_, y)| {
-                let xi_yj_nbs = xh3.is_neighbor_with(H3::from(y).index);
+                let xi_yj_nbs = xh3.is_neighbor_with(<&H3>::from_robj(&y).unwrap().index);
                 match xi_yj_nbs {
                     Ok(xi_yj_nbs) => Rbool::from_bool(xi_yj_nbs),
                     Err(_xi_yj_nbs) => Rbool::na_value(),
@@ -47,8 +48,8 @@ fn h3_edges_pairwise_(x: List, y: List) -> Robj {
         .into_iter()
         .zip(y.into_iter())
         .map(|((_, x), (_, y))| {
-            let x = H3::from(x).index;
-            let y = H3::from(y).index;
+            let x = <&H3>::from_robj(&x).unwrap().index;
+            let y = <&H3>::from_robj(&y).unwrap().index;
 
             let res = x.edge(y);
 
@@ -67,11 +68,11 @@ fn h3_edges_pairwise_(x: List, y: List) -> Robj {
 fn h3_edges_sparse_(x: List, y: List) -> List {
     x.into_iter()
         .map(|(_, x)| {
-            let xh3 = H3::from(x).index;
+            let xh3 = <&H3>::from_robj(&x).unwrap().index;
 
             y.iter()
                 .map(|(_, y)| {
-                    let yh3 = H3::from(y).index;
+                    let yh3 = <&H3>::from_robj(&y).unwrap().index;
                     let res = xh3.edge(yh3);
                     match res {
                         Some(res) => Robj::from(H3DEdge { edge: res } ),
@@ -185,7 +186,7 @@ fn h3_edges_(x: List) -> List {
     x
         .into_iter()
         .map(|(_, robj)| {
-            let eds = H3::from(robj).index.edges();
+            let eds = <&H3>::from_robj(&robj).unwrap().index.edges();
             eds
                 .map(|ed| H3DEdge { edge: ed })
                 .collect::<List>()
@@ -250,7 +251,7 @@ pub struct H3DEdge {
 impl H3DEdge {
 
     fn new(x: Robj, y: Robj) -> Self {
-        let ed = H3::from(x).index.edge(H3::from(y).index).unwrap();
+        let ed = <&H3>::from_robj(&x).unwrap().index.edge(<&H3>::from_robj(&y).unwrap().index).unwrap();
         Self { edge: ed }
     }
 
