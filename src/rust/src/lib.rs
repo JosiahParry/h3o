@@ -10,6 +10,7 @@ mod h3;
 mod hierarchical;
 mod inspection;
 mod togeo;
+mod grid_traversal;
 
 // every input is going to be a str from R, no pointer bisniss
 fn parse_h3str(x: &str) -> CellIndex {
@@ -50,6 +51,7 @@ extendr_module! {
     use hierarchical;
     use togeo;
     use edgefns;
+    use grid_traversal;
     fn h3_string_to_u64;
     fn h3_int_to_string;
     //fn h3_base_cell;
