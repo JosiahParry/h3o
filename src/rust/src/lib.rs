@@ -4,6 +4,7 @@ use h3o;
 use h3o::CellIndex;
 
 mod createh3;
+mod edgefns;
 mod fromsf;
 mod h3;
 mod hierarchical;
@@ -48,6 +49,7 @@ extendr_module! {
     use inspection;
     use hierarchical;
     use togeo;
+    use edgefns;
     fn h3_string_to_u64;
     fn h3_int_to_string;
     //fn h3_base_cell;

@@ -12,8 +12,6 @@ h3_string_to_u64 <- function(x) .Call(wrap__h3_string_to_u64, x)
 
 h3_int_to_string <- function(x) .Call(wrap__h3_int_to_string, x)
 
-h3_base_cell <- function(x) .Call(wrap__h3_base_cell, x)
-
 h3_from_string <- function(x) .Call(wrap__h3_from_string, x)
 
 h3_from_points <- function(x, resolution) .Call(wrap__h3_from_points, x, resolution)
@@ -25,4 +23,56 @@ h3_to_strings <- function(x) .Call(wrap__h3_to_strings, x)
 sfg_to_cells <- function(x, resolution) .Call(wrap__sfg_to_cells, x, resolution)
 
 sfc_to_cells <- function(x, resolution) .Call(wrap__sfc_to_cells, x, resolution)
+
+h3_resolution <- function(x) .Call(wrap__h3_resolution, x)
+
+h3_base_cell <- function(x) .Call(wrap__h3_base_cell, x)
+
+is_valid_h3 <- function(x) .Call(wrap__is_valid_h3, x)
+
+is_res_class_iii <- function(x) .Call(wrap__is_res_class_iii, x)
+
+is_hexagon <- function(x) .Call(wrap__is_hexagon, x)
+
+get_face_count <- function(x) .Call(wrap__get_face_count, x)
+
+get_parents_ <- function(x, resolution) .Call(wrap__get_parents_, x, resolution)
+
+get_children_ <- function(x, resolution) .Call(wrap__get_children_, x, resolution)
+
+get_children_count_ <- function(x, resolution) .Call(wrap__get_children_count_, x, resolution)
+
+get_children_center_ <- function(x, resolution) .Call(wrap__get_children_center_, x, resolution)
+
+get_children_position_ <- function(x, resolution) .Call(wrap__get_children_position_, x, resolution)
+
+get_children_at_ <- function(x, position, resolution) .Call(wrap__get_children_at_, x, position, resolution)
+
+compact_cells_ <- function(x) .Call(wrap__compact_cells_, x)
+
+uncompact_cells_ <- function(x, resolution) .Call(wrap__uncompact_cells_, x, resolution)
+
+h3_to_geo_ <- function(x) .Call(wrap__h3_to_geo_, x)
+
+is_nb_pairwise_ <- function(x, y) .Call(wrap__is_nb_pairwise_, x, y)
+
+is_nb_sparse_ <- function(x, y) .Call(wrap__is_nb_sparse_, x, y)
+
+h3_edges <- function(x, y) .Call(wrap__h3_edges, x, y)
+
+make_edge <- function(x, y) .Call(wrap__make_edge, x, y)
+
+H3DEdge <- new.env(parent = emptyenv())
+
+H3DEdge$new <- function(x, y) .Call(wrap__H3DEdge__new, x, y)
+
+H3DEdge$to_id <- function() .Call(wrap__H3DEdge__to_id, self)
+
+H3DEdge$length <- function(unit) .Call(wrap__H3DEdge__length, self, unit)
+
+#' @export
+`$.H3DEdge` <- function (self, name) { func <- H3DEdge[[name]]; environment(func) <- environment(); func }
+
+#' @export
+`[[.H3DEdge` <- `$.H3DEdge`
 

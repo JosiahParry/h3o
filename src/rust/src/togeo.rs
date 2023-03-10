@@ -1,5 +1,5 @@
 use extendr_api::prelude::*;
-use h3o::{CellIndex, geom::ToGeo};
+use h3o::{geom::ToGeo, CellIndex};
 
 use crate::h3::*;
 use sfconversions::geom::Geom;
