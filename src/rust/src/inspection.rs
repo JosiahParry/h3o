@@ -55,24 +55,45 @@ fn is_valid_h3(x: Vec<String>) -> Vec<bool> {
 }
 
 #[extendr]
-fn is_res_class_iii(x: List) -> Vec<bool> {
+fn is_res_class_iii(x: List) -> Logicals {
     x.into_iter()
-        .map(|(_, x)| <&H3>::from_robj(&x).unwrap().index.resolution().is_class3())
-        .collect::<Vec<bool>>()
+        .map(|(_, x)| {
+            let cell = <&H3>::from_robj(&x);
+
+            match cell {
+                Ok(cell) => Rbool::from_bool(cell.index.resolution().is_class3()),
+                Err(_) => Rbool::na()
+            }
+        })
+        .collect::<Logicals>()
 }
 
 #[extendr]
-fn is_hexagon(x: List) -> Vec<bool> {
+fn is_hexagon(x: List) -> Logicals {
     x.into_iter()
-        .map(|(_, x)| <&H3>::from_robj(&x).unwrap().index.is_pentagon())
-        .collect::<Vec<bool>>()
+        .map(|(_, x)| {
+            let cell = <&H3>::from_robj(&x);
+
+            match cell {
+                Ok(cell) => Rbool::from_bool(cell.index.is_pentagon()),
+                Err(_) => Rbool::na(),
+            }
+        })
+        .collect::<Logicals>()
 }
 
 // skip CellIndex::icosahedron_faces
 #[extendr]
 fn get_face_count(x: List) -> Vec<i32> {
     x.into_iter()
-        .map(|(_, x)| <&H3>::from_robj(&x).unwrap().index.max_face_count() as i32)
+        .map(|(_, x)| {
+            let cell = <&H3>::from_robj(&x);
+
+            match cell {
+                Ok(cell) => cell.index.max_face_count() as i32,
+                Err(_) => i32::MIN
+            }
+        })
         .collect::<Vec<i32>>()
 }
 
