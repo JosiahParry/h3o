@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use extendr_api::prelude::*;
+use extendr_api::{prelude::*, RMatrix};
 
 use crate::h3::{H3, vctrs_class};
 use h3o::{DirectedEdgeIndex};
@@ -64,7 +64,9 @@ fn h3_edges_pairwise_(x: List, y: List) -> Robj {
         .map(|((_, x), (_, y))| {
 
             if x.is_null() || y.is_null() {
-                Robj::from(extendr_api::NULL)
+                list!()
+                .set_class(edge_vctrs())
+                .unwrap()
             } else {
                 let x = <&H3>::from_robj(&x).unwrap().index;
                 let y = <&H3>::from_robj(&y).unwrap().index;
@@ -89,7 +91,9 @@ fn h3_edges_sparse_(x: List, y: List) -> List {
         .map(|(_, x)| {
 
             if x.is_null() {
-                Robj::from(extendr_api::NULL)
+                list!()
+                    .set_class(edge_vctrs())
+                    .unwrap()
             } else {
                 let xh3 = <&H3>::from_robj(&x).unwrap().index;
 
@@ -128,6 +132,27 @@ fn is_valid_edge_(x: Strings) -> Logicals {
             }
         })
         .collect::<Logicals>()
+}
+
+#[extendr]
+fn h3_edge_from_strings_(x: Strings) -> Robj {
+    x
+        .into_iter()
+        .map(|x| {
+            let x_na = x.is_na();
+            if !x_na {
+               let edge = DirectedEdgeIndex::from_str(x.as_str());
+               match edge {
+                Ok(res) => Robj::from(H3DEdge::from(res)),
+                Err(_res) => Robj::from(extendr_api::NULL)
+               }
+            } else {
+                Robj::from(extendr_api::NULL)
+            }
+        })
+        .collect::<List>()
+        .set_class(edge_vctrs())
+        .unwrap()
 }
 
 #[extendr]
@@ -227,20 +252,22 @@ fn edge_boundary_(x: List) -> List {
             match res {
                 Ok(res) => {
                     let  boundary = res.edge.boundary();
-                    let mut coords = boundary
+                    let coords = boundary
                         .into_iter()
                         .map(|x| [x.lng(), x.lat()])
                         .collect::<Vec<[f64; 2]>>();
 
-                    coords.push(coords[0].clone());
-
                     let m = RMatrix::new_matrix(coords.len(), 2, |r, c| coords[r][c]);
 
-                    list![m].set_class(["XY", "POLYGON", "sfg"]).unwrap()
+                    m.set_class(["XY", "LINESTRING", "sfg"]).unwrap()
 
                 },
 
-                Err(_) => list!().set_class(["XY", "POLYGON", "sfg"]).unwrap()
+                Err(_) => {
+                    RMatrix::new_matrix(0, 2, |_r, _c| 0 )
+                    .into_robj()
+                    .set_class(["XY", "LINESTRING", "sfg"]).unwrap()
+                }
             }
         })
         .collect::<List>()
@@ -253,11 +280,14 @@ extendr_module! {
     fn h3_edges_pairwise_;
     fn h3_edges_sparse_;
     fn is_valid_edge_;
+    fn h3_edge_from_strings_;
     fn get_directed_origin_;
     fn get_directed_destination_;
     fn get_directed_cells_;
     fn h3_edges_;
     fn edge_boundary_;
+    fn edges_to_strings;
+    fn edge_vctrs;
     impl H3DEdge;
 }
 
@@ -291,14 +321,27 @@ impl H3DEdge {
     }
 }
 
-// impl From<Robj> for H3DEdge {
-//     fn from(robj: Robj) -> Self {
-//         let robj: ExternalPtr<H3DEdge> = robj.try_into().unwrap();
-//         let robj: H3DEdge = *robj;
-//         robj
-//     }
-// }
+impl From<DirectedEdgeIndex> for H3DEdge {
+    fn from(value: DirectedEdgeIndex) -> Self {
+        H3DEdge { edge: value }
+    }
+}
 
+#[extendr]
+fn edges_to_strings(x: List) -> Strings {
+    x.into_iter()
+        .map(|(_, robj)| {
+            //
+            let indx = <&H3DEdge>::from_robj(&robj);
+            match indx {
+                Ok(indx) => Rstr::from_string(&indx.edge.to_string()),
+                Err(_) => Rstr::na()
+            }
+        })
+        .collect::<Strings>()
+}
+
+#[extendr]
 fn edge_vctrs() -> [String; 3] {
     [
         String::from("H3Edge"),

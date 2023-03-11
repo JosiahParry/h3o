@@ -7,19 +7,26 @@ fn grid_disk_fast_(x: List, k: u32) -> List {
     x
         .into_iter()
         .map(|(_, robj)| {
-            let ind = <&H3>::from_robj(&robj).unwrap().index;
-            ind.grid_disk_fast(k)
-                .map(|x| 
-                    // can be null sometimes 
-                    // if it messed up catch it and return null
-                    match x {
-                        Some(x) => Robj::from(H3::from(x)),
-                        None => Robj::from(extendr_api::NULL)
-                    }
-                )
-                .collect::<List>()
-                .set_class(vctrs_class())
-                .unwrap()
+
+            if robj.is_null() {
+                list!()
+                    .set_class(vctrs_class())
+                    .unwrap()
+            } else {
+                let ind = <&H3>::from_robj(&robj).unwrap().index;
+                ind.grid_disk_fast(k)
+                    .map(|x| 
+                        // can be null sometimes 
+                        // if it messed up catch it and return null
+                        match x {
+                            Some(x) => Robj::from(H3::from(x)),
+                            None => Robj::from(extendr_api::NULL)
+                        }
+                    )
+                    .collect::<List>()
+                    .set_class(vctrs_class())
+                    .unwrap()
+            }
 
         })
         .collect::<List>()
@@ -30,15 +37,21 @@ fn grid_disk_safe_(x: List, k: u32) -> List {
     x
         .into_iter()
         .map(|(_, robj)| {
-            let ind = <&H3>::from_robj(&robj).unwrap().index;
-            ind.grid_disk_safe(k)
-                .map(|x| 
-                    Robj::from(H3::from(x))
-                )
-                .collect::<List>()
-                .set_class(vctrs_class())
-                .unwrap()
 
+            if robj.is_null() {
+                list!()
+                    .set_class(vctrs_class())
+                    .unwrap()
+            } else {
+                let ind = <&H3>::from_robj(&robj).unwrap().index;
+                ind.grid_disk_safe(k)
+                    .map(|x| 
+                        Robj::from(H3::from(x))
+                    )
+                    .collect::<List>()
+                    .set_class(vctrs_class())
+                    .unwrap()
+            }
         })
         .collect::<List>()
 }
@@ -49,13 +62,19 @@ fn grid_distances_(x: List, k: u32) -> List {
     x
     .into_iter()
     .map(|(_, robj)| {
-        let ind = <&H3>::from_robj(&robj).unwrap().index;
-        ind.grid_disk_distances::<Vec<_>>(k)
-            .into_iter()
-            .map(|(_, dist)| {
-                dist
-            })
-            .collect::<Vec<u32>>()
+
+        if robj.is_null() {
+            let vc: Vec<u32> = Vec::with_capacity(0);
+            vc
+        } else {
+            let ind = <&H3>::from_robj(&robj).unwrap().index;
+            ind.grid_disk_distances::<Vec<_>>(k)
+                .into_iter()
+                .map(|(_, dist)| {
+                    dist
+                })
+                .collect::<Vec<u32>>()
+        }
     })
     .collect::<List>()
 }

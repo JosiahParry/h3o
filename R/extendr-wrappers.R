@@ -62,6 +62,8 @@ h3_edges_sparse_ <- function(x, y) .Call(wrap__h3_edges_sparse_, x, y)
 
 is_valid_edge_ <- function(x) .Call(wrap__is_valid_edge_, x)
 
+h3_edge_from_strings_ <- function(x) .Call(wrap__h3_edge_from_strings_, x)
+
 get_directed_origin_ <- function(x) .Call(wrap__get_directed_origin_, x)
 
 get_directed_destination_ <- function(x) .Call(wrap__get_directed_destination_, x)
@@ -71,6 +73,10 @@ get_directed_cells_ <- function(x) .Call(wrap__get_directed_cells_, x)
 h3_edges_ <- function(x) .Call(wrap__h3_edges_, x)
 
 edge_boundary_ <- function(x) .Call(wrap__edge_boundary_, x)
+
+edges_to_strings <- function(x) .Call(wrap__edges_to_strings, x)
+
+edge_vctrs <- function() .Call(wrap__edge_vctrs)
 
 grid_disk_fast_ <- function(x, k) .Call(wrap__grid_disk_fast_, x, k)
 

@@ -3,7 +3,7 @@
 #' @param x
 #'
 #' @export
-#'
+#' @examples
 #' h3_ids <- c("831f91fffffffff", "831fb5fffffffff", "831f94fffffffff")
 #'
 #' flatten_h3(

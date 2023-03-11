@@ -12,3 +12,14 @@ flatten_h3(x)
 \description{
 Flatten a list H3 vectors
 }
+\examples{
+h3_ids <- c("831f91fffffffff", "831fb5fffffffff", "831f94fffffffff")
+
+flatten_h3(
+  list(
+    NULL,
+    h3_from_strings(h3_ids),
+    h3_from_strings(h3_ids[1])
+  )
+)
+}
