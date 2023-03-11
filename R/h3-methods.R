@@ -17,7 +17,7 @@ format.H3 <- function(x, ...) formatC(h3_to_strings(x), ...)
 }
 
 #' @export
-as.character <- function(x) h3_to_strings(x)
+as.character.H3 <- function(x) h3_to_strings(x)
 
 # export in zzz.R
 st_as_sfc.H3 <- function(x) {

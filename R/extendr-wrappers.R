@@ -92,6 +92,8 @@ grid_path_cells_size_ <- function(x, y) .Call(wrap__grid_path_cells_size_, x, y)
 
 grid_distance_ <- function(x, y) .Call(wrap__grid_distance_, x, y)
 
+local_ij_ <- function(x, y) .Call(wrap__local_ij_, x, y)
+
 H3DEdge <- new.env(parent = emptyenv())
 
 H3DEdge$new <- function(x, y) .Call(wrap__H3DEdge__new, x, y)
