@@ -5,24 +5,37 @@ use extendr_api::prelude::*;
 use h3o::CellIndex;
 
 #[extendr]
-fn h3_resolution(x: List) -> Vec<i8> {
+fn h3_resolution(x: List) -> Vec<i32> {
     x.into_iter()
         .map(|(_, x)| {
-            let y = <&H3>::from_robj(&x).unwrap().index.resolution();
-            y as i8
+            if x.is_null() {
+                i32::MIN
+            } else {
+                let idx = <&H3>::from_robj(&x);
+                match idx {
+                    Ok(idx) => idx.index.resolution() as i32, 
+                    Err(_) => i32::MIN
+                }
+            }            
         })
-        .collect::<Vec<i8>>()
+        .collect::<Vec<i32>>()
 }
 
 #[extendr]
-fn h3_base_cell(x: List) -> Vec<i8> {
+fn h3_base_cell(x: List) -> Vec<i32> {
     x.into_iter()
         .map(|(_, x)| {
-            let cell = <&H3>::from_robj(&x).unwrap().index.base_cell();
-            let res = u8::from(cell);
-            res as i8
+            if x.is_null() {
+                i32::MIN
+            } else {
+                let cell = <&H3>::from_robj(&x);
+                match cell {
+                    Ok(cell) => u8::from(cell.index.base_cell()) as i32,
+                    Err(_) => i32::MIN
+                }
+            }
         })
-        .collect::<Vec<i8>>()
+        .collect::<Vec<i32>>()
 }
 
 // scalar implementation

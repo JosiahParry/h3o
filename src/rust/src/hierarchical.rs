@@ -7,7 +7,18 @@ use std::iter::FromIterator;
 fn get_parents_(x: List, resolution: u8) -> Robj {
     let reso = match_resolution(resolution);
     x.into_iter()
-        .map(|(_, robj)| Robj::from(H3::from(<&H3>::from_robj(&robj).unwrap().index.parent(reso).unwrap())))
+        .map(|(_, robj)| {
+            if robj.is_null() {
+                Robj::from(extendr_api::NULL)
+            } else {
+                let rent = <&H3>::from_robj(&robj).unwrap().index.parent(reso);
+                match rent {
+                    Some(rent) => Robj::from(H3::from(rent)),
+                    None => Robj::from(extendr_api::NULL)
+                }
+
+            }
+        })
         .collect::<List>()
         .set_class(vctrs_class())
         .unwrap()
@@ -18,12 +29,18 @@ fn get_children_(x: List, resolution: u8) -> List {
     let reso = match_resolution(resolution);
     x.into_iter()
         .map(|(_, robj)| {
-            let children = <&H3>::from_robj(&robj).unwrap().index.children(reso);
-            children
-                .map(|child| Robj::from(H3::from(child)))
-                .collect::<List>()
+            if robj.is_null() {
+                list!()
                 .set_class(vctrs_class())
                 .unwrap()
+            } else {
+                let children = <&H3>::from_robj(&robj).unwrap().index.children(reso);
+                children
+                    .map(|child| Robj::from(H3::from(child)))
+                    .collect::<List>()
+                    .set_class(vctrs_class())
+                    .unwrap()
+            }
         })
         .collect::<List>()
 }
@@ -32,7 +49,13 @@ fn get_children_(x: List, resolution: u8) -> List {
 fn get_children_count_(x: List, resolution: u8) -> Vec<i32> {
     let reso = match_resolution(resolution);
     x.into_iter()
-        .map(|(_, robj)| <&H3>::from_robj(&robj).unwrap().index.children_count(reso) as i32)
+        .map(|(_, robj)| {
+            if robj.is_null() {
+                i32::MIN
+            } else {
+                <&H3>::from_robj(&robj).unwrap().index.children_count(reso) as i32
+            } 
+        })
         .collect::<Vec<i32>>()
 }
 
@@ -41,12 +64,17 @@ fn get_children_center_(x: List, resolution: u8) -> Robj {
     let reso = match_resolution(resolution);
     x.into_iter()
         .map(|(_, robj)| {
-            let child = <&H3>::from_robj(&robj).unwrap().index.center_child(reso);
 
-            match child {
-                Some(child) => Robj::from(H3::from(child)),
-                None => Robj::from(extendr_api::NULL),
+            if robj.is_null() {
+                Robj::from(extendr_api::NULL)
+            } else {
+                let child = <&H3>::from_robj(&robj).unwrap().index.center_child(reso);
+                match child {
+                    Some(child) => Robj::from(H3::from(child)),
+                    None => Robj::from(extendr_api::NULL),
+                }    
             }
+            
         })
         .collect::<List>()
         .set_class(vctrs_class())
