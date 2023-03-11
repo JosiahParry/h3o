@@ -14,3 +14,8 @@ format.H3 <- function(x, ...) formatC(h3_to_strings(x), ...)
     class = c("H3", "vctrs_vctr", "list")
   )
 }
+
+
+st_as_sfc.H3 <- function(x) {
+
+}

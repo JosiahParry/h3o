@@ -8,27 +8,59 @@ use h3o::{CellIndex, LatLng};
 use crate::h3::{vctrs_class, H3};
 
 #[extendr]
-fn h3_from_string(x: Strings) -> Robj {
+fn h3_from_string_(x: Strings) -> Robj {
     x.into_iter()
-        .map(|strng| Robj::from(H3::from(CellIndex::from_str(strng.as_str()).unwrap())))
+        .map(|strng| {
+            if strng.is_na() {
+                Robj::from(extendr_api::NULL)
+            } else {
+                Robj::from(H3::from(CellIndex::from_str(strng.as_str()).unwrap()))
+            }
+        })
         .collect::<List>()
         .set_class(vctrs_class())
         .unwrap()
 }
 
 #[extendr]
-fn h3_from_points(x: List, resolution: u8) -> Robj {
+fn h3_from_points_(x: List, resolution: u8) -> Robj {
     let reso = match_resolution(resolution);
 
     x.into_iter()
         .map(|(_, robj)| {
             let dbls = Doubles::try_from(robj).unwrap();
-            let ll = LatLng::new(dbls[1].0, dbls[0].0).unwrap();
-            Robj::from(H3::from(ll.to_cell(reso)))
+            let ll = LatLng::new(dbls[1].0, dbls[0].0);
+            
+            match ll {
+                Ok(ll) => {
+                    Robj::from(H3::from(ll.to_cell(reso)))
+                },
+                Err(_) => Robj::from(extendr_api::NULL)
+            }
         })
         .collect::<List>()
         .set_class(vctrs_class())
         .unwrap()
+}
+
+#[extendr]
+fn h3_from_xy_(x: Doubles, y: Doubles, resolution: u8) -> Robj {
+    let reso = match_resolution(resolution);
+
+    x
+        .into_iter()
+        .zip(y.iter())
+        .map(|(x, y)| {
+            if x.is_na() || y.is_na() {
+                Robj::from(extendr_api::NULL)
+            } else {
+                Robj::from(H3::from(LatLng::new(x.0, y.0).unwrap().to_cell(reso)))
+            }
+        })
+        .collect::<List>()
+        .set_class(vctrs_class())
+        .unwrap()
+        
 }
 
 // boundary for a single hex
@@ -64,7 +96,8 @@ pub fn match_resolution(resolution: u8) -> Resolution {
 
 extendr_module! {
     mod createh3;
-    fn h3_from_string;
-    fn h3_from_points;
+    fn h3_from_string_;
+    fn h3_from_points_;
+    fn h3_from_xy_;
     fn h3_boundaries_;
 }

@@ -11,14 +11,19 @@ fn is_nb_pairwise_(x: List, y: List) -> Logicals {
         .zip(y.into_iter())
         .map(|((_, x), (_, y))| {
 
-            let y = <&H3>::from_robj(&y).unwrap().index;
-            let x = <&H3>::from_robj(&x).unwrap().index;
-            let is_nb = x.is_neighbor_with(y);
-
-            match is_nb {
-                Ok(is_nb) => Rbool::from_bool(is_nb),
-                Err(_is_nb) => Rbool::na_value(),
+            if x.is_null() || y.is_null() {
+                Rbool::na()
+            } else {
+                let y = <&H3>::from_robj(&y).unwrap().index;
+                let x = <&H3>::from_robj(&x).unwrap().index;
+                let is_nb = x.is_neighbor_with(y);
+    
+                match is_nb {
+                    Ok(is_nb) => Rbool::from_bool(is_nb),
+                    Err(_is_nb) => Rbool::na_value(),
+                }
             }
+            
         })
         .collect::<Logicals>()
 }
@@ -28,15 +33,24 @@ fn is_nb_sparse_(x: List, y: List) -> List {
     x
         .into_iter()
         .map(|(_, x)| {
-            let xh3 = <&H3>::from_robj(&x).unwrap().index;
-            y.iter().map(|(_, y)| {
-                let xi_yj_nbs = xh3.is_neighbor_with(<&H3>::from_robj(&y).unwrap().index);
-                match xi_yj_nbs {
-                    Ok(xi_yj_nbs) => Rbool::from_bool(xi_yj_nbs),
-                    Err(_xi_yj_nbs) => Rbool::na_value(),
-                }
-            })
-            .collect::<Logicals>()
+            if x.is_null() { 
+                Logicals::new(1)
+            } else {
+                let xh3 = <&H3>::from_robj(&x).unwrap().index;
+                y.iter().map(|(_, y)| {
+                    if y.is_null() {
+                        Rbool::na()
+                    } else {
+                        let xi_yj_nbs = xh3.is_neighbor_with(<&H3>::from_robj(&y).unwrap().index);
+                        match xi_yj_nbs {
+                            Ok(xi_yj_nbs) => Rbool::from_bool(xi_yj_nbs),
+                            Err(_xi_yj_nbs) => Rbool::na_value(),
+                        }
+                    }
+                    
+                })
+                .collect::<Logicals>()
+            }
         })
         .collect::<List>()
 }

@@ -9,7 +9,6 @@ pub struct H3 {
 
 #[extendr]
 impl H3 {
-
 }
 
 impl From<CellIndex> for H3 {
@@ -18,6 +17,8 @@ impl From<CellIndex> for H3 {
     }
 }
 
+// returns an array of strings with the appropriate vctrs class
+#[extendr]
 pub fn vctrs_class() -> [String; 3] {
     [
         String::from("H3"),
@@ -42,4 +43,5 @@ fn h3_to_strings(x: List) -> Strings {
 extendr_module! {
     mod h3;
     fn h3_to_strings;
+    fn vctrs_class;
 }
