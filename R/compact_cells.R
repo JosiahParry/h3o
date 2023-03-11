@@ -1,4 +1,10 @@
-compact_cells <- function(h3) {
-  h3_strings <- h3_to_strings(h3)
-  compact_cells_(h3[match(unique(h3_strings), h3_strings)])
+#' Compact H3 Cells
+#'
+#' Reduce a set of H3 indices of the same resolution to the minimum number of H3 indices of
+#' varrying resolution that entirely covers the input area.
+#'
+#' @param x a vector of H3 indexes
+#' @export
+compact_cells <- function(x) {
+  compact_cells_(unique(x))
 }

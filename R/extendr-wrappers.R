@@ -8,21 +8,17 @@
 #' @useDynLib h3o, .registration = TRUE
 NULL
 
-h3_string_to_u64 <- function(x) .Call(wrap__h3_string_to_u64, x)
+h3_from_string_ <- function(x) .Call(wrap__h3_from_string_, x)
 
-h3_int_to_string <- function(x) .Call(wrap__h3_int_to_string, x)
+h3_from_points_ <- function(x, resolution) .Call(wrap__h3_from_points_, x, resolution)
 
-h3_from_string <- function(x) .Call(wrap__h3_from_string, x)
-
-h3_from_points <- function(x, resolution) .Call(wrap__h3_from_points, x, resolution)
+h3_from_xy_ <- function(x, y, resolution) .Call(wrap__h3_from_xy_, x, y, resolution)
 
 h3_boundaries_ <- function(x) .Call(wrap__h3_boundaries_, x)
 
 h3_to_strings <- function(x) .Call(wrap__h3_to_strings, x)
 
-sfg_to_cells <- function(x, resolution) .Call(wrap__sfg_to_cells, x, resolution)
-
-sfc_to_cells <- function(x, resolution) .Call(wrap__sfc_to_cells, x, resolution)
+vctrs_class <- function() .Call(wrap__vctrs_class)
 
 h3_resolution <- function(x) .Call(wrap__h3_resolution, x)
 
@@ -53,6 +49,8 @@ compact_cells_ <- function(x) .Call(wrap__compact_cells_, x)
 uncompact_cells_ <- function(x, resolution) .Call(wrap__uncompact_cells_, x, resolution)
 
 h3_to_geo_ <- function(x) .Call(wrap__h3_to_geo_, x)
+
+h3_to_points_ <- function(x) .Call(wrap__h3_to_points_, x)
 
 is_nb_pairwise_ <- function(x, y) .Call(wrap__is_nb_pairwise_, x, y)
 

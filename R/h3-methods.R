@@ -1,3 +1,4 @@
+#' @export
 unique.H3 <- function(x) {
   h3_strs <- h3_to_strings(x)
   x[match(unique(h3_strs), h3_strs)]
@@ -15,7 +16,18 @@ format.H3 <- function(x, ...) formatC(h3_to_strings(x), ...)
   )
 }
 
+#' @export
+as.character <- function(x) h3_to_strings(x)
 
+# export in zzz.R
 st_as_sfc.H3 <- function(x) {
+  is_missing <- is.na(x)
+  res <- vector(mode = "list", length(x))
+  res[!is_missing] <- h3_boundaries_(x[!is_missing])
 
+  for (i in which(is_missing)) {
+    res[[i]] <- structure(list(), class = c("XY", "POLYGON", "sfg"))
+  }
+
+  sf::st_sfc(res, crs = 4326)
 }
