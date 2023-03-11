@@ -62,15 +62,20 @@ fn h3_edges_pairwise_(x: List, y: List) -> Robj {
         .into_iter()
         .zip(y.into_iter())
         .map(|((_, x), (_, y))| {
-            let x = <&H3>::from_robj(&x).unwrap().index;
-            let y = <&H3>::from_robj(&y).unwrap().index;
 
-            let res = x.edge(y);
-
-            match res {
-                Some(res) => Robj::from(H3DEdge { edge: res } ),
-                None => extendr_api::NULL.into(),
-
+            if x.is_null() || y.is_null() {
+                Robj::from(extendr_api::NULL)
+            } else {
+                let x = <&H3>::from_robj(&x).unwrap().index;
+                let y = <&H3>::from_robj(&y).unwrap().index;
+    
+                let res = x.edge(y);
+    
+                match res {
+                    Some(res) => Robj::from(H3DEdge { edge: res } ),
+                    None => extendr_api::NULL.into(),
+    
+                }
             }
         })
         .collect::<List>()
@@ -82,6 +87,7 @@ fn h3_edges_pairwise_(x: List, y: List) -> Robj {
 fn h3_edges_sparse_(x: List, y: List) -> List {
     x.into_iter()
         .map(|(_, x)| {
+            
             let xh3 = <&H3>::from_robj(&x).unwrap().index;
 
             y.iter()
