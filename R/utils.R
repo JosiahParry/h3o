@@ -26,3 +26,7 @@ flatten_h3 <- function(x) {
     class = vctrs_class()
   )
 }
+
+
+#' @export
+is_h3 <- function(x) inherits(x, "H3")
