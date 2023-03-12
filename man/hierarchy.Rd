@@ -24,7 +24,7 @@ get_children_at(x, position, resolution)
 \arguments{
 \item{x}{an \code{H3} vector.}
 
-\item{resolution}{a scalar integer representing the grid resolution in the range \link{0, 15}.}
+\item{resolution}{a scalar integer representing the grid resolution in the range [0, 15].}
 
 \item{position}{the integer position in the ordered set of cells.}
 }
@@ -49,5 +49,5 @@ get_parents(h3, 3)
 get_children(h3, 5)
 get_children_count(h3, 6)
 get_children_position(h3, 3)
-get_children_at(x, 999, 10)
+get_children_at(h3, 999, 10)
 }

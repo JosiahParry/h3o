@@ -12,7 +12,7 @@ uncompact_cells(x, resolution)
 \arguments{
 \item{x}{a vector of H3 indexes.}
 
-\item{resolution}{a scalar integer representing the grid resolution in the range \link{0, 15}.}
+\item{resolution}{a scalar integer representing the grid resolution in the range [0, 15].}
 }
 \description{
 Reduce a set of H3 indices of the same resolution to the minimum number of H3 indices of

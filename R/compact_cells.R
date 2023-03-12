@@ -4,7 +4,7 @@
 #' varying resolution that entirely covers the input area.
 #'
 #' @param x a vector of H3 indexes.
-#' @param resolution a scalar integer representing the grid resolution in the range [0, 15].
+#' @param resolution a scalar integer representing the grid resolution in the range \[0, 15\].
 #' @export
 #' @examples
 #' x <- h3_from_strings("841f91dffffffff")
@@ -13,7 +13,7 @@
 #' all.equal(x, z)
 compact_cells <- function(x) {
   stopifnot(is_h3(x))
-  compact_cells_(na.omit(unique(x)))
+  compact_cells_(stats::na.omit(unique(x)))
 }
 
 #' @export

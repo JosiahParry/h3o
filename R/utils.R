@@ -1,8 +1,6 @@
-#' Flatten a list H3 vectors
-#'
-#' @param x
-#'
+
 #' @export
+#' @rdname H3
 #' @examples
 #' h3_ids <- c("831f91fffffffff", "831fb5fffffffff", "831f94fffffffff")
 #'
@@ -29,4 +27,5 @@ flatten_h3 <- function(x) {
 
 
 #' @export
+#' @rdname H3
 is_h3 <- function(x) inherits(x, "H3")

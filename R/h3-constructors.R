@@ -3,11 +3,9 @@
 #'
 #' Create H3 indices from `sfc` objects, vectors of x and y coordinates, or H3 string IDs.
 #'
-#' @param x for `h3_from_points()` an object of class `sfc_POINT`. For `h3_from_strings()` a character vector of H3 index IDs. For `h3_from_xy()` a numeric vector of longitudes.
 #' @param y a numeric vector of latitudes.
+#' @param x for `h3_from_points()` an object of class `sfc_POINT`. For `h3_from_strings()` a character vector of H3 index IDs. For `h3_from_xy()` a numeric vector of longitudes.
 #' @param resolution an integer indicating the H3 cell resolution. Must be between 0 and 15 inclusive.
-#' @export
-#' @rdname H3
 #' @examples
 #' h3_from_xy(-90, 120, 5)
 #'
@@ -37,6 +35,8 @@
 #' - `h3_from_xy()`: converts vectors of `x` and `y` coordinates to an `H3` vector
 #' - `h3_to_points()`: converts an `H3` vector to a either an `sfc_POINT` object or a list of `sfg` `POINT` objects.
 #' - `h3_to_vertexes()`: converts an `H3` vector to an `sfc_MULTIPOINT` object or a list of `MULTIPOINT` objects.
+#' @export
+#' @rdname H3
 h3_from_xy <- function(x, y, resolution) {
   if (resolution < 0 || resolution > 15)
     stop("`resolution` must be an integer in range [0, 15]")

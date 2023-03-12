@@ -30,6 +30,8 @@ grid_local_ij(x, y)
 \item{k}{the order of ring neighbors. 0 is the focal location (the observed H3 index). 1 is the immediate neighbors of the H3 index. 2 is the neighbors of the 1st order neighbors and so on.}
 
 \item{safe}{default \code{TRUE}. If \code{FALSE} uses the fast algorithm which can fail.}
+
+\item{y}{an \code{H3} vector.}
 }
 \description{
 Functions used to traverse the H3 grid.

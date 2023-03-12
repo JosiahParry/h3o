@@ -11,6 +11,8 @@
 
 #' H3 index neighbors
 #'
+#' @param x an `H3` vector.
+#' @param y and `H3` vector.
 #' @export
 #' @rdname is_nb
 is_nb_pairwise <- function(x, y) {
@@ -31,6 +33,7 @@ is_nb_sparse <- function(x, y) {
 #'
 #' @param x an H3 vector
 #' @param y an H3 vector
+#' @param flat default `FALSE`. If `TRUE` return a single vector combining all edges of all H3 cells.
 #'
 #' @details
 #'
@@ -149,6 +152,7 @@ st_as_sfc.H3Edge <- function(x) {
 
 #' @export
 #' @rdname edges
-as.character.H3Edge <- function(x) {
+#' @param ... unused.
+as.character.H3Edge <- function(x, ...) {
   edges_to_strings(x)
 }

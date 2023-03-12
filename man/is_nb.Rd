@@ -9,6 +9,11 @@ is_nb_pairwise(x, y)
 
 is_nb_sparse(x, y)
 }
+\arguments{
+\item{x}{an \code{H3} vector.}
+
+\item{y}{and \code{H3} vector.}
+}
 \description{
 H3 index neighbors
 }

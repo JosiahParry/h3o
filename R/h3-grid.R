@@ -13,6 +13,7 @@
 #' Functions used to traverse the H3 grid.
 #'
 #' @param x an `H3` vector.
+#' @param y an `H3` vector.
 #' @param k the order of ring neighbors. 0 is the focal location (the observed H3 index). 1 is the immediate neighbors of the H3 index. 2 is the neighbors of the 1st order neighbors and so on.
 #' @param safe default `TRUE`. If `FALSE` uses the fast algorithm which can fail.
 #'

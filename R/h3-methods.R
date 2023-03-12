@@ -1,5 +1,5 @@
 #' @export
-unique.H3 <- function(x) {
+unique.H3 <- function(x, ...) {
   h3_strs <- h3_to_strings(x)
   x[match(unique(h3_strs), h3_strs)]
 }
@@ -18,7 +18,8 @@ format.H3 <- function(x, ...) formatC(h3_to_strings(x), ...)
 
 #' @export
 #' @rdname H3
-as.character.H3 <- function(x) h3_to_strings(x)
+#' @param ... unused.
+as.character.H3 <- function(x, ...) h3_to_strings(x)
 
 # export in zzz.R
 st_as_sfc.H3 <- function(x) {

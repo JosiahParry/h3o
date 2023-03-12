@@ -34,12 +34,16 @@ h3_edge_origin(x)
 
 h3_edge_destination(x)
 
-\method{as.character}{H3Edge}(x)
+\method{as.character}{H3Edge}(x, ...)
 }
 \arguments{
 \item{x}{an H3 vector}
 
+\item{flat}{default \code{FALSE}. If \code{TRUE} return a single vector combining all edges of all H3 cells.}
+
 \item{y}{an H3 vector}
+
+\item{...}{unused.}
 }
 \description{
 Functions to create or work with \code{H3Edge} vectors. See \code{Details} for further details.
