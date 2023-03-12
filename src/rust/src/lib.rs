@@ -3,11 +3,11 @@ use extendr_api::prelude::*;
 mod createh3;
 mod edgefns;
 mod fromsf;
+mod grid_traversal;
 mod h3;
 mod hierarchical;
 mod inspection;
 mod togeo;
-mod grid_traversal;
 
 extendr_module! {
     mod h3o;

@@ -14,9 +14,8 @@ fn get_parents_(x: List, resolution: u8) -> Robj {
                 let rent = <&H3>::from_robj(&robj).unwrap().index.parent(reso);
                 match rent {
                     Some(rent) => Robj::from(H3::from(rent)),
-                    None => Robj::from(extendr_api::NULL)
+                    None => Robj::from(extendr_api::NULL),
                 }
-
             }
         })
         .collect::<List>()
@@ -30,9 +29,7 @@ fn get_children_(x: List, resolution: u8) -> List {
     x.into_iter()
         .map(|(_, robj)| {
             if robj.is_null() {
-                list!()
-                .set_class(vctrs_class())
-                .unwrap()
+                list!().set_class(vctrs_class()).unwrap()
             } else {
                 let children = <&H3>::from_robj(&robj).unwrap().index.children(reso);
                 children
@@ -54,7 +51,7 @@ fn get_children_count_(x: List, resolution: u8) -> Vec<i32> {
                 i32::MIN
             } else {
                 <&H3>::from_robj(&robj).unwrap().index.children_count(reso) as i32
-            } 
+            }
         })
         .collect::<Vec<i32>>()
 }
@@ -64,7 +61,6 @@ fn get_children_center_(x: List, resolution: u8) -> Robj {
     let reso = match_resolution(resolution);
     x.into_iter()
         .map(|(_, robj)| {
-
             if robj.is_null() {
                 Robj::from(extendr_api::NULL)
             } else {
@@ -72,9 +68,8 @@ fn get_children_center_(x: List, resolution: u8) -> Robj {
                 match child {
                     Some(child) => Robj::from(H3::from(child)),
                     None => Robj::from(extendr_api::NULL),
-                }    
+                }
             }
-            
         })
         .collect::<List>()
         .set_class(vctrs_class())
@@ -101,7 +96,10 @@ fn get_children_at_(x: List, position: i32, resolution: u8) -> Robj {
     let reso = match_resolution(resolution);
     x.into_iter()
         .map(|(_, robj)| {
-            let child = <&H3>::from_robj(&robj).unwrap().index.child_at(position as u64, reso);
+            let child = <&H3>::from_robj(&robj)
+                .unwrap()
+                .index
+                .child_at(position as u64, reso);
             match child {
                 Some(child) => Robj::from(H3::from(child)),
                 None => Robj::from(extendr_api::NULL),
@@ -134,12 +132,21 @@ fn uncompact_cells_(x: List, resolution: u8) -> List {
 
     x.into_iter()
         .map(|(_, robj)| {
-            let uncompacted = CellIndex::uncompact(std::iter::once(<&H3>::from_robj(&robj).unwrap().index), reso);
-            uncompacted
-                .map(|x| Robj::from(H3::from(x)))
-                .collect::<List>()
-                .set_class(vctrs_class())
-                .unwrap()
+            if robj.is_null() {
+                list!()
+                    .set_class(vctrs_class())
+                    .unwrap()
+            } else {
+                let uncompacted = CellIndex::uncompact(
+                    std::iter::once(<&H3>::from_robj(&robj).unwrap().index),
+                    reso,
+                );
+                uncompacted
+                    .map(|x| Robj::from(H3::from(x)))
+                    .collect::<List>()
+                    .set_class(vctrs_class())
+                    .unwrap()
+            } 
         })
         .collect::<List>()
 }

@@ -30,12 +30,10 @@ fn h3_from_points_(x: List, resolution: u8) -> Robj {
         .map(|(_, robj)| {
             let dbls = Doubles::try_from(robj).unwrap();
             let ll = LatLng::new(dbls[1].0, dbls[0].0);
-            
+
             match ll {
-                Ok(ll) => {
-                    Robj::from(H3::from(ll.to_cell(reso)))
-                },
-                Err(_) => Robj::from(extendr_api::NULL)
+                Ok(ll) => Robj::from(H3::from(ll.to_cell(reso))),
+                Err(_) => Robj::from(extendr_api::NULL),
             }
         })
         .collect::<List>()
@@ -47,8 +45,7 @@ fn h3_from_points_(x: List, resolution: u8) -> Robj {
 fn h3_from_xy_(x: Doubles, y: Doubles, resolution: u8) -> Robj {
     let reso = match_resolution(resolution);
 
-    x
-        .into_iter()
+    x.into_iter()
         .zip(y.iter())
         .map(|(x, y)| {
             if x.is_na() || y.is_na() {
@@ -60,7 +57,6 @@ fn h3_from_xy_(x: Doubles, y: Doubles, resolution: u8) -> Robj {
         .collect::<List>()
         .set_class(vctrs_class())
         .unwrap()
-        
 }
 
 // boundary for a single hex

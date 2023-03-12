@@ -48,7 +48,14 @@
 <span></span>
 <span><span class="fu">h3_from_points</span><span class="op">(</span><span class="va">x</span>, <span class="va">resolution</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">h3_from_strings</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">h3_from_strings</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">h3_to_points</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">h3_to_vertexes</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for H3</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -65,6 +72,15 @@
 <dd><p>an integer indicating the H3 cell resolution. Must be between 0 and 15 inclusive.</p></dd>
 
 </dl></div>
+    <div id="details">
+    <h2>Details</h2>
+    
+<ul><li><p><code>h3_from_points()</code>: takes an <code>sfc_POINT</code> object and creates a vector of <code>H3</code> cells</p></li>
+<li><p><code>h3_from_strings()</code>: converts a character vector of cell indexes to an H3 vector</p></li>
+<li><p><code>h3_from_xy()</code>: converts vectors of <code>x</code> and <code>y</code> coordinates to an <code>H3</code> vector</p></li>
+<li><p><code>h3_to_points()</code>: converts an <code>H3</code> vector to a either an <code>sfc_POINT</code> object or a list of <code>sfg</code> <code>POINT</code> objects.</p></li>
+<li><p><code>h3_to_vertexes()</code>: converts an <code>H3</code> vector to an <code>sfc_MULTIPOINT</code> object or a list of <code>MULTIPOINT</code> objects.</p></li>
+</ul></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
@@ -87,12 +103,23 @@
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="co"># convert to H3 objects</span></span></span>
-<span class="r-in"><span>  <span class="fu">h3_from_points</span><span class="op">(</span><span class="va">pnts</span>, <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">h3s</span> <span class="op">&lt;-</span> <span class="fu">h3_from_points</span><span class="op">(</span><span class="va">pnts</span>, <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="fu">h3_to_vertexes</span><span class="op">(</span><span class="va">h3s</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="fu">h3_to_points</span><span class="op">(</span><span class="va">h3s</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required namespace: sf</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;H3[5]&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 852cb18ffffffff 8510f047fffffff 856160cffffffff 85019377fffffff</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5] 8510d2dbfffffff</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Geometry set for 5 features </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Geometry type: POINT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Dimension:     XY</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Bounding box:  xmin: 24.72192 ymin: 14.94596 xmax: 73.52265 ymax: 42.13182</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Geodetic CRS:  WGS 84</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> POINT (24.72192 37.3928)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> POINT (73.52265 23.07089)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> POINT (45.27477 14.94596)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> POINT (46.3641 16.37337)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> POINT (27.81511 42.13182)</span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>

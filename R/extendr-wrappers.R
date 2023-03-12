@@ -21,19 +21,19 @@ h3_to_strings <- function(x) .Call(wrap__h3_to_strings, x)
 vctrs_class <- function() .Call(wrap__vctrs_class)
 
 #' H3 Inspection Functions
-#' 
-#' Functions that provide metadata about H3 indexes. 
-#' 
+#'
+#' Functions that provide metadata about H3 indexes.
+#'
 #' @param x an `H3` vector.
-#' 
+#'
 #' @details
 #' - `h3_resolution()`: returns the resolution of each H3 cell.
 #' - `h3_base_cell()`: returns the base cell integer.
 #' - `is_valid_h3()`: given a vector of H3 index string IDs, determine if they are valid.
 #' - `is_res_class_iii()`: determines if an H3 cell has Class III orientation.
-#' - `is_pentagon()`: determines if an H3 cell is one of the rare few pentagons. 
+#' - `is_pentagon()`: determines if an H3 cell is one of the rare few pentagons.
 #' - `get_face_count()`: returns the number of faces that intersect with the H3 index.
-#' 
+#'
 #' @export
 #' @rdname inspection
 h3_resolution <- function(x) .Call(wrap__h3_resolution, x)
@@ -75,6 +75,8 @@ uncompact_cells_ <- function(x, resolution) .Call(wrap__uncompact_cells_, x, res
 h3_to_geo_ <- function(x) .Call(wrap__h3_to_geo_, x)
 
 h3_to_points_ <- function(x) .Call(wrap__h3_to_points_, x)
+
+h3_to_vertexes_ <- function(x) .Call(wrap__h3_to_vertexes_, x)
 
 is_nb_pairwise_ <- function(x, y) .Call(wrap__is_nb_pairwise_, x, y)
 

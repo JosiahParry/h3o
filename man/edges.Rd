@@ -11,6 +11,7 @@
 \alias{h3_edge_cells}
 \alias{h3_edge_origin}
 \alias{h3_edge_destination}
+\alias{as.character.H3Edge}
 \title{H3 Edges}
 \usage{
 h3_edges(x, flat = FALSE)
@@ -32,6 +33,8 @@ h3_edge_cells(x)
 h3_edge_origin(x)
 
 h3_edge_destination(x)
+
+\method{as.character}{H3Edge}(x)
 }
 \arguments{
 \item{x}{an H3 vector}

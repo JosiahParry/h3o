@@ -32,6 +32,6 @@
 
 // extendr_module! {
 //     mod fromsf;
-    // fn sfg_to_cells;
-    // fn sfc_to_cells;
+// fn sfg_to_cells;
+// fn sfc_to_cells;
 // }

@@ -8,8 +8,7 @@ pub struct H3 {
 }
 
 #[extendr]
-impl H3 {
-}
+impl H3 {}
 
 impl From<CellIndex> for H3 {
     fn from(index: CellIndex) -> Self {
@@ -35,7 +34,7 @@ fn h3_to_strings(x: List) -> Strings {
             let indx = <&H3>::from_robj(&robj);
             match indx {
                 Ok(indx) => Rstr::from_string(&indx.index.to_string()),
-                Err(_) => Rstr::na()
+                Err(_) => Rstr::na(),
             }
         })
         .collect::<Strings>()

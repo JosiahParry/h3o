@@ -24,8 +24,19 @@
 #'   )
 #'
 #'   # convert to H3 objects
-#'   h3_from_points(pnts, 5)
+#'   h3s <- h3_from_points(pnts, 5)
+#'
+#'   h3_to_vertexes(h3s)
+#'
+#'   h3_to_points(h3s)
 #' }
+#'
+#' @details
+#' - `h3_from_points()`: takes an `sfc_POINT` object and creates a vector of `H3` cells
+#' - `h3_from_strings()`: converts a character vector of cell indexes to an H3 vector
+#' - `h3_from_xy()`: converts vectors of `x` and `y` coordinates to an `H3` vector
+#' - `h3_to_points()`: converts an `H3` vector to a either an `sfc_POINT` object or a list of `sfg` `POINT` objects.
+#' - `h3_to_vertexes()`: converts an `H3` vector to an `sfc_MULTIPOINT` object or a list of `MULTIPOINT` objects.
 h3_from_xy <- function(x, y, resolution) {
   if (resolution < 0 || resolution > 15)
     stop("`resolution` must be an integer in range [0, 15]")
@@ -61,3 +72,34 @@ h3_from_points <- function(x, resolution) {
 #' @export
 #' @rdname H3
 h3_from_strings <- function(x) h3_from_string_(x)
+
+
+#' @export
+#' @rdname H3
+h3_to_points <- function(x) {
+  stopifnot(is_h3(x))
+  res <- h3_to_points_(x)
+
+  # ask user to install sf
+  rlang::check_installed("sf")
+
+  if (requireNamespace("sf")) {
+    res <- sf::st_sfc(res, crs = 4326)
+  }
+  res
+}
+
+#' @export
+#' @rdname H3
+h3_to_vertexes <- function(x) {
+  stopifnot(is_h3(x))
+  res <- h3_to_vertexes_(x)
+
+  # ask user to install sf
+  rlang::check_installed("sf")
+
+  if (requireNamespace("sf")) {
+    res <- sf::st_sfc(res, crs = 4326)
+  }
+  res
+}

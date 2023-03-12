@@ -8,5 +8,6 @@ crate-type = [ 'staticlib' ]
 
 [dependencies]
 extendr-api = '*'
+geo-types = "0.7.9"
 h3o = { version = "0.3.0", features = ["geo"] }
 sfconversions = { git = "https://github.com/JosiahParry/sfconversions" }

@@ -199,6 +199,7 @@ name = "h3o"
 version = "0.1.0"
 dependencies = [
  "extendr-api",
+ "geo-types",
  "h3o 0.3.0",
  "sfconversions",
 ]

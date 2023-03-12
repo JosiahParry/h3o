@@ -2,14 +2,25 @@
 % Please edit documentation in R/compact_cells.R
 \name{compact_cells}
 \alias{compact_cells}
+\alias{uncompact_cells}
 \title{Compact H3 Cells}
 \usage{
 compact_cells(x)
+
+uncompact_cells(x, resolution)
 }
 \arguments{
-\item{x}{a vector of H3 indexes}
+\item{x}{a vector of H3 indexes.}
+
+\item{resolution}{a scalar integer representing the grid resolution in the range \link{0, 15}.}
 }
 \description{
 Reduce a set of H3 indices of the same resolution to the minimum number of H3 indices of
-varrying resolution that entirely covers the input area.
+varying resolution that entirely covers the input area.
+}
+\examples{
+x <- h3_from_strings("841f91dffffffff")
+y <- uncompact_cells(x, 5)[[1]]
+z <- compact_cells(y)
+all.equal(x, z)
 }

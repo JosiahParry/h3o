@@ -49,9 +49,10 @@ is_nb_sparse <- function(x, y) {
 #' - `h3_edge_origin()`: returns a vector of `H3Edge` origin cells
 #' - `h3_edge_destination()`: returns a vector of `H3Edge` destination cells
 #' @rdname edges
+#' @export
 h3_edges <- function(x, flat = FALSE) {
   stopifnot(is_h3(x))
-  res <- h3_edges_(xx)
+  res <- h3_edges_(x)
 
   if (flat) {
     res <- structure(
@@ -90,11 +91,6 @@ h3_shared_edge_pairwise <- function(x, y) {
 format.H3Edge <- function(x, ...) formatC(edges_to_strings(x), ...)
 
 #' @export
-as.character.H3Edge <- function(x) {
-  edges_to_strings(x)
-}
-
-#' @export
 #' @rdname edges
 is_edge <- function(x) inherits(x, "H3Edge")
 
@@ -115,14 +111,12 @@ h3_edges_from_strings <- function(x) {
 #' @export
 #' @rdname edges
 flatten_edges <- function(x) {
-  x <- unlist(x)
-  # types <- vapply(x, typeof, character(1))
   all_classes <- vapply(x, function(x) class(x)[1], character(1))
-
   if (!identical(unique(all_classes), "H3Edge")) {
     stop("All list elements must be an H3Edge vector")
   }
 
+  x <- unlist(x)
   structure(x, class = edge_vctrs())
 }
 
@@ -148,7 +142,13 @@ h3_edge_destination <- function(x) {
   get_directed_destination_(x)
 }
 
-
 st_as_sfc.H3Edge <- function(x) {
   sf::st_sfc(edge_boundary_(x), crs = 4326)
+}
+
+
+#' @export
+#' @rdname edges
+as.character.H3Edge <- function(x) {
+  edges_to_strings(x)
 }
