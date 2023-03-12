@@ -55,7 +55,11 @@
 <span><span class="fu">h3_to_vertexes</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for H3</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">flatten_h3</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">is_h3</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -70,6 +74,10 @@
 
 <dt>resolution</dt>
 <dd><p>an integer indicating the H3 cell resolution. Must be between 0 and 15 inclusive.</p></dd>
+
+
+<dt>...</dt>
+<dd><p>unused.</p></dd>
 
 </dl></div>
     <div id="details">
@@ -112,14 +120,25 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> Geometry set for 5 features </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Geometry type: POINT</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Dimension:     XY</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Bounding box:  xmin: 24.72192 ymin: 14.94596 xmax: 73.52265 ymax: 42.13182</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Bounding box:  xmin: 13.63127 ymin: 11.48522 xmax: 40.99785 ymax: 80.2743</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Geodetic CRS:  WGS 84</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> POINT (24.72192 37.3928)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> POINT (73.52265 23.07089)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> POINT (45.27477 14.94596)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> POINT (46.3641 16.37337)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> POINT (27.81511 42.13182)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> POINT (13.63127 80.2743)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> POINT (40.99785 80.05809)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> POINT (23.13898 17.46968)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> POINT (20.21992 58.72256)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> POINT (38.75584 11.48522)</span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">h3_ids</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"831f91fffffffff"</span>, <span class="st">"831fb5fffffffff"</span>, <span class="st">"831f94fffffffff"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">flatten_h3</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="cn">NULL</span>,</span></span>
+<span class="r-in"><span>    <span class="fu">h3_from_strings</span><span class="op">(</span><span class="va">h3_ids</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    <span class="fu">h3_from_strings</span><span class="op">(</span><span class="va">h3_ids</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;H3[4]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 831f91fffffffff 831fb5fffffffff 831f94fffffffff 831f91fffffffff</span>
 </code></pre></div>
     </div>
   </div>
