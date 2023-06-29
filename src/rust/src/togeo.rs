@@ -2,7 +2,7 @@ use extendr_api::prelude::*;
 use h3o::{geom::ToGeo, CellIndex, LatLng};
 
 use crate::h3::*;
-use sfconversions;
+
 use sfconversions::geom::Geom;
 #[extendr]
 fn h3_to_geo_(x: List) -> Robj {

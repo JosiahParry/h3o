@@ -20,3 +20,4 @@ extendr_module! {
     use edgefns;
     use grid_traversal;
 }
+

@@ -33,3 +33,12 @@ st_as_sfc.H3 <- function(x) {
 
   sf::st_sfc(res, crs = 4326)
 }
+
+
+#' @export
+plot.H3 <- function(x, ...) {
+  rlang::check_installed("sf", "for conversion to `sfc` objects")
+
+  plot(sf::st_as_sfc(x), ...)
+
+}

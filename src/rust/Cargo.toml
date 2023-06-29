@@ -10,4 +10,5 @@ crate-type = [ 'staticlib' ]
 extendr-api = '*'
 geo-types = "0.7.9"
 h3o = { version = "0.3.0", features = ["geo"] }
-sfconversions = { git = "https://github.com/JosiahParry/sfconversions" }
+#sfconversions = { git = "https://github.com/JosiahParry/sfconversions", branch = "refactor" }
+sfconversions = "0.1.0"
