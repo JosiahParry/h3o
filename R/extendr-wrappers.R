@@ -23,6 +23,10 @@ h3_to_strings <- function(x) .Call(wrap__h3_to_strings, x)
 
 vctrs_class <- function() .Call(wrap__vctrs_class)
 
+sfg_to_cells <- function(x, resolution) .Call(wrap__sfg_to_cells, x, resolution)
+
+sfc_to_cells <- function(x, resolution) .Call(wrap__sfc_to_cells, x, resolution)
+
 #' H3 Inspection Functions
 #'
 #' Functions that provide metadata about H3 indexes.

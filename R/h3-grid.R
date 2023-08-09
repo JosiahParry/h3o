@@ -1,13 +1,3 @@
-# DONE fn grid_disk_fast_;
-# DONE fn grid_disk_safe_;
-# DONE fn grid_distances_;
-# DONE fn grid_ring_;
-# DONE fn grid_path_cells_;
-# DONE fn grid_path_cells_size_;
-# DONE fn grid_distance_;
-# DONE fn local_ij_;
-
-
 #' Grid Traversal
 #'
 #' Functions used to traverse the H3 grid.
