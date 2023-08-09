@@ -13,7 +13,7 @@ extendr_module! {
     mod h3o;
     use createh3;
     use h3;
-    // use fromsf;
+    use fromsf;
     use inspection;
     use hierarchical;
     use togeo;

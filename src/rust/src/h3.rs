@@ -28,7 +28,7 @@ pub fn vctrs_class() -> [String; 3] {
 
 #[extendr]
 fn h3_to_strings(x: List) -> Strings {
-    x.into_iter()
+    let res = x.into_iter()
         .map(|(_, robj)| {
             //
             let indx = <&H3>::from_robj(&robj);
@@ -37,7 +37,9 @@ fn h3_to_strings(x: List) -> Strings {
                 Err(_) => Rstr::na(),
             }
         })
-        .collect::<Strings>()
+        .collect::<Vec<Rstr>>();
+
+    Strings::from_values(res)
 }
 extendr_module! {
     mod h3;

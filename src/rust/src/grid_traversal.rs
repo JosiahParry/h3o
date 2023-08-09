@@ -4,13 +4,13 @@ use crate::h3::*;
 
 #[extendr]
 fn grid_disk_fast_(x: List, k: u32) -> List {
-    x.into_iter()
+    let res = x.into_iter()
         .map(|(_, robj)| {
             if robj.is_null() {
                 list!().set_class(vctrs_class()).unwrap()
             } else {
                 let ind = <&H3>::from_robj(&robj).unwrap().index;
-                ind.grid_disk_fast(k)
+                let res = ind.grid_disk_fast(k)
                     .map(|x| 
                         // can be null sometimes 
                         // if it messed up catch it and return null
@@ -18,35 +18,43 @@ fn grid_disk_fast_(x: List, k: u32) -> List {
                             Some(x) => Robj::from(H3::from(x)),
                             None => Robj::from(extendr_api::NULL)
                         })
-                    .collect::<List>()
+                    .collect::<Vec<Robj>>();
+
+                List::from_values(res)
                     .set_class(vctrs_class())
                     .unwrap()
             }
         })
-        .collect::<List>()
+        .collect::<Vec<Robj>>();
+
+    List::from_values(res)
 }
 
 #[extendr]
 fn grid_disk_safe_(x: List, k: u32) -> List {
-    x.into_iter()
+    let res = x.into_iter()
         .map(|(_, robj)| {
             if robj.is_null() {
                 list!().set_class(vctrs_class()).unwrap()
             } else {
                 let ind = <&H3>::from_robj(&robj).unwrap().index;
-                ind.grid_disk_safe(k)
-                    .map(|x| Robj::from(H3::from(x)))
-                    .collect::<List>()
+                let res = ind.grid_disk_safe(k)
+                    .map(|x| H3::from(x))
+                    .collect::<Vec<H3>>();
+
+                List::from_values(res)
                     .set_class(vctrs_class())
                     .unwrap()
             }
         })
-        .collect::<List>()
+        .collect::<Vec<Robj>>();
+
+    List::from_values(res)
 }
 
 #[extendr]
 fn grid_distances_(x: List, k: u32) -> List {
-    x.into_iter()
+    let res = x.into_iter()
         .map(|(_, robj)| {
             if robj.is_null() {
                 let vc: Vec<u32> = Vec::with_capacity(0);
@@ -59,17 +67,20 @@ fn grid_distances_(x: List, k: u32) -> List {
                     .collect::<Vec<u32>>()
             }
         })
-        .collect::<List>()
+        .collect::<Vec<Vec<u32>>>();
+
+    List::from_values(res)
+
 }
 
 #[extendr]
 fn grid_ring_(x: List, k: u32) -> List {
-    x.into_iter()
+    let res = x.into_iter() 
         .map(|(_, robj)| {
             if robj.is_null() {
                 list!().set_class(vctrs_class()).unwrap()
             } else {
-                <&H3>::from_robj(&robj)
+                let r = <&H3>::from_robj(&robj)
                     .unwrap()
                     .index
                     .grid_ring_fast(k)
@@ -81,17 +92,21 @@ fn grid_ring_(x: List, k: u32) -> List {
                             None => Robj::from(extendr_api::NULL),
                         }
                     })
-                    .collect::<List>()
+                    .collect::<Vec<Robj>>();
+
+                List::from_values(r)
                     .set_class(vctrs_class())
                     .unwrap()
             }
         })
-        .collect::<List>()
+        .collect::<Vec<Robj>>();
+
+    List::from_values(res)
 }
 
 #[extendr]
 fn grid_path_cells_(x: List, y: List) -> List {
-    x.into_iter()
+    let res = x.into_iter()
         .zip(y.into_iter())
         .map(|((_, x), (_, y))| {
             if x.is_null() || y.is_null() {
@@ -101,13 +116,17 @@ fn grid_path_cells_(x: List, y: List) -> List {
                 let y = <&H3>::from_robj(&y).unwrap().index;
                 let path = x.grid_path_cells(y);
                 let path = match path {
-                    Ok(path) => path
-                        .into_iter()
-                        .map(|x| match x {
-                            Ok(x) => Robj::from(H3::from(x)),
-                            Err(_x) => Robj::from(extendr_api::NULL),
-                        })
-                        .collect::<List>(),
+                    Ok(path) => {
+                        let r = path
+                            .into_iter()
+                            .map(|x| match x {
+                                Ok(x) => Robj::from(H3::from(x)),
+                                Err(_x) => Robj::from(extendr_api::NULL),
+                            })
+                            .collect::<Vec<Robj>>();
+
+                        List::from_values(r)
+                        },
                     // idk if this is the right way to handle it
                     Err(_path) => list!(),
                 };
@@ -115,7 +134,10 @@ fn grid_path_cells_(x: List, y: List) -> List {
                 path.set_class(vctrs_class()).unwrap()
             }
         })
-        .collect::<List>()
+        .collect::<Vec<Robj>>();
+
+    List::from_values(res)
+    
 }
 
 #[extendr]

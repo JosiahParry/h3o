@@ -17,7 +17,7 @@ fn h3_to_geo_(x: List) -> Robj {
 
 #[extendr]
 fn h3_to_points_(x: List) -> List {
-    x.into_iter()
+    let res = x.into_iter()
         .map(|(_, robj)| {
             let idx = <&H3>::from_robj(&robj);
 
@@ -30,14 +30,16 @@ fn h3_to_points_(x: List) -> List {
                 Err(_) => Doubles::from_values([Rfloat::na(), Rfloat::na()]),
             };
 
-            res.into_robj().set_class(["XY", "POINT", "sfg"])
+            res.into_robj().set_class(["XY", "POINT", "sfg"]).unwrap()
         })
-        .collect::<List>()
+        .collect::<Vec<Robj>>();
+
+    List::from_values(res)
 }
 
 #[extendr]
 fn h3_to_vertexes_(x: List) -> List {
-    x.into_iter()
+    let res = x.into_iter()
         .map(|(_, robj)| {
 
             if robj.is_null() {
@@ -57,7 +59,9 @@ fn h3_to_vertexes_(x: List) -> List {
             }
 
         })
-        .collect::<List>()
+        .collect::<Vec<Robj>>();
+
+    List::from_values(res)
 }
 
 extendr_module! {

@@ -6,7 +6,7 @@ use std::iter::FromIterator;
 #[extendr]
 fn get_parents_(x: List, resolution: u8) -> Robj {
     let reso = match_resolution(resolution);
-    x.into_iter()
+    let res = x.into_iter()
         .map(|(_, robj)| {
             if robj.is_null() {
                 Robj::from(extendr_api::NULL)
@@ -18,7 +18,9 @@ fn get_parents_(x: List, resolution: u8) -> Robj {
                 }
             }
         })
-        .collect::<List>()
+        .collect::<Vec<Robj>>();
+
+    List::from_values(res)
         .set_class(vctrs_class())
         .unwrap()
 }
@@ -26,20 +28,23 @@ fn get_parents_(x: List, resolution: u8) -> Robj {
 #[extendr]
 fn get_children_(x: List, resolution: u8) -> List {
     let reso = match_resolution(resolution);
-    x.into_iter()
+    let res = x.into_iter()
         .map(|(_, robj)| {
             if robj.is_null() {
                 list!().set_class(vctrs_class()).unwrap()
             } else {
                 let children = <&H3>::from_robj(&robj).unwrap().index.children(reso);
-                children
-                    .map(|child| Robj::from(H3::from(child)))
-                    .collect::<List>()
+                let r = children
+                    .map(|child| H3::from(child))
+                    .collect::<Vec<H3>>();
+                List::from_values(r)
                     .set_class(vctrs_class())
                     .unwrap()
             }
         })
-        .collect::<List>()
+        .collect::<Vec<Robj>>();
+
+    List::from_values(res)
 }
 
 #[extendr]
@@ -59,7 +64,7 @@ fn get_children_count_(x: List, resolution: u8) -> Vec<i32> {
 #[extendr]
 fn get_children_center_(x: List, resolution: u8) -> Robj {
     let reso = match_resolution(resolution);
-    x.into_iter()
+    let res = x.into_iter()
         .map(|(_, robj)| {
             if robj.is_null() {
                 Robj::from(extendr_api::NULL)
@@ -71,7 +76,9 @@ fn get_children_center_(x: List, resolution: u8) -> Robj {
                 }
             }
         })
-        .collect::<List>()
+        .collect::<Vec<Robj>>();
+
+    List::from_values(res)
         .set_class(vctrs_class())
         .unwrap()
 }
@@ -94,7 +101,7 @@ fn get_children_position_(x: List, resolution: u8) -> Integers {
 #[extendr]
 fn get_children_at_(x: List, position: i32, resolution: u8) -> Robj {
     let reso = match_resolution(resolution);
-    x.into_iter()
+    let res = x.into_iter()
         .map(|(_, robj)| {
             let child = <&H3>::from_robj(&robj)
                 .unwrap()
@@ -105,7 +112,9 @@ fn get_children_at_(x: List, position: i32, resolution: u8) -> Robj {
                 None => Robj::from(extendr_api::NULL),
             }
         })
-        .collect::<List>()
+        .collect::<Vec<Robj>>();
+
+    List::from_values(res)
         .set_class(vctrs_class())
         .unwrap()
 }
@@ -117,11 +126,13 @@ fn compact_cells_(x: List) -> Robj {
         .map(|(_, robj)| <&H3>::from_robj(&robj).unwrap().index)
         .collect::<Vec<CellIndex>>();
 
-    CellIndex::compact(h3_vec)
+    let res = CellIndex::compact(h3_vec)
         .unwrap()
         .into_iter()
-        .map(|x| Robj::from(H3::from(x)))
-        .collect::<List>()
+        .map(|x| H3::from(x))
+        .collect::<Vec<H3>>();
+
+    List::from_values(res)
         .set_class(vctrs_class())
         .unwrap()
 }
@@ -130,7 +141,7 @@ fn compact_cells_(x: List) -> Robj {
 fn uncompact_cells_(x: List, resolution: u8) -> List {
     let reso = match_resolution(resolution);
 
-    x.into_iter()
+    let res = x.into_iter()
         .map(|(_, robj)| {
             if robj.is_null() {
                 list!()
@@ -141,14 +152,18 @@ fn uncompact_cells_(x: List, resolution: u8) -> List {
                     std::iter::once(<&H3>::from_robj(&robj).unwrap().index),
                     reso,
                 );
-                uncompacted
-                    .map(|x| Robj::from(H3::from(x)))
-                    .collect::<List>()
+                let res = uncompacted
+                    .map(|x| H3::from(x))
+                    .collect::<Vec<H3>>();
+
+                List::from_values(res)
                     .set_class(vctrs_class())
                     .unwrap()
             } 
         })
-        .collect::<List>()
+        .collect::<Vec<Robj>>();
+
+    List::from_values(res)
 }
 
 // skipping uncompactCellSize

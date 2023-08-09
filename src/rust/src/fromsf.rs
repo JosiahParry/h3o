@@ -2,7 +2,7 @@ use extendr_api::prelude::*;
 
 // personal dep
 //use sfconversions::sfg_to_geometry;
-use sfconversions::{sfg_to_geometry};
+use sfconversions::sfg_to_geometry;
 
 use h3o::geom::ToCells;
 
@@ -16,23 +16,35 @@ fn sfg_to_cells(x: Robj, resolution: u8) -> Robj {
 
     let geo = sfg_to_geometry(x).geom;
     let h3geo = h3o::geom::Geometry::from_degrees(geo).unwrap();
-    h3geo
+
+    let res = h3geo
         .to_cells(resolution)
-        .map(|x| Robj::from(H3::from(x)))
-        .collect::<List>()
+        .map(|x| H3::from(x))
+        .collect::<Vec<H3>>();
+
+    List::from_values(res)
         .set_class(vctrs_class())
         .unwrap()
 }
 
-// #[extendr]
-// fn sfc_to_cells(x: List, resolution: u8) -> List {
-//     x.into_iter()
-//         .map(|(_, robj)| sfg_to_cells(robj, resolution))
-//         .collect::<List>()
-// }
+#[extendr]
+fn sfc_to_cells(x: List, resolution: u8) -> List {
 
-// extendr_module! {
-//     mod fromsf;
-// fn sfg_to_cells;
-// fn sfc_to_cells;
-// }
+    let res = x.into_iter()
+        .map(|(_, robj)| {
+            if robj.len() == 0 || robj.is_null() || robj.is_na() {
+                list!().set_class(vctrs_class()).unwrap()
+            } else {
+                sfg_to_cells(robj, resolution)
+            }
+        })
+        .collect::<Vec<Robj>>();
+
+    List::from_values(res)
+}
+
+extendr_module! {
+    mod fromsf;
+    fn sfg_to_cells;
+    fn sfc_to_cells;
+}
