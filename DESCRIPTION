@@ -16,5 +16,6 @@ Imports:
     stats,
     vctrs
 Suggests: 
-    sf
+    sf,
+    wk
 Config/rextendr/version: 0.3.1.9000
