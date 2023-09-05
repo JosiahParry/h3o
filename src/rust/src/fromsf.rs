@@ -28,7 +28,10 @@ fn sfg_to_cells(x: Robj, resolution: u8) -> Robj {
 }
 
 #[extendr]
-fn sfc_to_cells(x: List, resolution: u8) -> List {
+/// Convert an sfc object to cells
+/// @export
+fn sfc_to_cells(x: List, resolution: i32) -> List {
+    let resolution = resolution as u8;
 
     let res = x.into_iter()
         .map(|(_, robj)| {
