@@ -56,7 +56,7 @@ fn h3_to_vertexes_(x: List) -> List {
     
                 let mp = geo_types::MultiPoint::new(ps);
     
-                Robj::from(Geom::from(mp))
+                sfconversions::tosf::to_sfg(Geom::from(mp))
             }
 
         })

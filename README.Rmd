@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 # h3o
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/JosiahParry/h3o/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/JosiahParry/h3o/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 h3o is a system-dependency free package to interact with the H3 Geospatial Indexing system by Uber. h3o utilizes the Rust library h3o with is a pure rust implementation of H3 and does not link or use Uber's H3 C library. h3o R interface is powered by [extendr](https://extendr.github.io/) and should be able to compile on any machine. 
