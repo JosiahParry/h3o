@@ -3,7 +3,8 @@ use h3o::{geom::ToGeo, CellIndex, LatLng};
 
 use crate::h3::*;
 
-use sfconversions::geom::Geom;
+use sfconversions::Geom;
+
 #[extendr]
 fn h3_to_geo_(x: List) -> Robj {
     let h3_vec = x

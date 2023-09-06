@@ -1,53 +1,64 @@
 use extendr_api::prelude::*;
 
-// personal dep
-//use sfconversions::sfg_to_geometry;
-use sfconversions::sfg_to_geometry;
+use sfconversions::fromsf::sfc_to_geometry;
 
 use h3o::geom::ToCells;
+use h3o::geom::{PolyfillConfig, ContainmentMode};
 
 // internal deps
 use crate::createh3::match_resolution;
 use crate::h3::*;
 
-#[extendr]
-fn sfg_to_cells(x: Robj, resolution: u8) -> Robj {
-    let resolution = match_resolution(resolution);
+use rayon::prelude::*;
 
-    let geo = sfg_to_geometry(x).geom;
-    let h3geo = h3o::geom::Geometry::from_degrees(geo).unwrap();
+use geo_types::Geometry;
 
-    let res = h3geo
-        .to_cells(resolution)
-        .map(|x| H3::from(x))
-        .collect::<Vec<H3>>();
+fn geometry_to_cells(x: Geometry, containment: PolyfillConfig) -> Vec<H3> {
+    let h3geo = h3o::geom::Geometry::from_degrees(x)
+        .unwrap();
 
-    List::from_values(res)
-        .set_class(vctrs_class())
-        .unwrap()
+    h3geo
+        .to_cells(containment)
+        .map(H3::from)
+        .collect::<Vec<_>>()
 }
 
 #[extendr]
-/// Convert an sfc object to cells
-/// @export
-fn sfc_to_cells(x: List, resolution: i32) -> List {
-    let resolution = resolution as u8;
+fn sfc_to_cells_(x: List, resolution: i32, containment: &str) -> List {
 
-    let res = x.into_iter()
-        .map(|(_, robj)| {
-            if robj.len() == 0 || robj.is_null() || robj.is_na() {
-                list!().set_class(vctrs_class()).unwrap()
-            } else {
-                sfg_to_cells(robj, resolution)
+    let resolution = match_resolution(resolution as u8);
+
+    let containment_strategy = match containment {
+        "boundary" => ContainmentMode::ContainsBoundary,
+        "centroid" => ContainmentMode::ContainsCentroid,
+        "intersect" => ContainmentMode::IntersectsBoundary,
+        _ => ContainmentMode::ContainsBoundary
+    };
+
+    let poly_config = PolyfillConfig::new(resolution)
+        .containment_mode(containment_strategy);
+
+    let x = sfc_to_geometry(x);
+
+    let res = x.into_par_iter()
+        .map(|xi| {
+            match xi {
+                Some(xi) => geometry_to_cells(xi, poly_config),
+                None => vec![]
             }
         })
-        .collect::<Vec<Robj>>();
+        .collect::<Vec<Vec<H3>>>();
+
+    let res = res.into_iter().map(|xi| {
+        List::from_values(xi).set_class(vctrs_class()).unwrap()
+    })
+    .collect::<Vec<Robj>>();
 
     List::from_values(res)
 }
 
 extendr_module! {
     mod fromsf;
-    fn sfg_to_cells;
-    fn sfc_to_cells;
+    // fn sfg_to_cells;
+    fn sfc_to_cells_;
 }
