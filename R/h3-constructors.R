@@ -37,6 +37,8 @@
 #' - `h3_to_vertexes()`: converts an `H3` vector to an `sfc_MULTIPOINT` object or a list of `MULTIPOINT` objects.
 #' @export
 #' @rdname H3
+#' @returns 
+#' See details.
 h3_from_xy <- function(x, y, resolution) {
   if (resolution < 0 || resolution > 15)
     stop("`resolution` must be an integer in range [0, 15]")

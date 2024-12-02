@@ -8,7 +8,7 @@ use h3o::{CellIndex, LatLng};
 use crate::h3::{vctrs_class, H3};
 
 #[extendr]
-fn h3_from_string_(x: Strings) -> Robj {
+fn h3_from_string_(x: Strings) -> List  {
     let res = x.into_iter()
         .map(|strng| {
             if strng.is_na() {
@@ -21,17 +21,17 @@ fn h3_from_string_(x: Strings) -> Robj {
 
     List::from_values(res)
         .set_class(vctrs_class())
-        .unwrap()
+        .unwrap().clone()
 }
 
 #[extendr]
-fn h3_from_points_(x: List, resolution: u8) -> Robj {
+fn h3_from_points_(x: List, resolution: u8) -> List {
     let reso = match_resolution(resolution);
 
     let res = x.into_iter()
         .map(|(_, robj)| {
             let dbls = Doubles::try_from(robj).unwrap();
-            let ll = LatLng::new(dbls[1].0, dbls[0].0);
+            let ll = LatLng::new(dbls[1].inner(), dbls[0].inner());
 
             match ll {
                 Ok(ll) => Robj::from(H3::from(ll.to_cell(reso))),
@@ -43,10 +43,11 @@ fn h3_from_points_(x: List, resolution: u8) -> Robj {
     List::from_values(res)
         .set_class(vctrs_class())
         .unwrap()
+        .clone()
 }
 
 #[extendr]
-fn h3_from_xy_(x: Doubles, y: Doubles, resolution: u8) -> Robj {
+fn h3_from_xy_(x: Doubles, y: Doubles, resolution: u8) -> List {
     let reso = match_resolution(resolution);
 
     let res = x.into_iter()
@@ -55,7 +56,7 @@ fn h3_from_xy_(x: Doubles, y: Doubles, resolution: u8) -> Robj {
             if x.is_na() || y.is_na() {
                 Robj::from(extendr_api::NULL)
             } else {
-                Robj::from(H3::from(LatLng::new(x.0, y.0).unwrap().to_cell(reso)))
+                Robj::from(H3::from(LatLng::new(x.inner(), y.inner()).unwrap().to_cell(reso)))
             }
         })
         .collect::<Vec<Robj>>();
@@ -63,11 +64,12 @@ fn h3_from_xy_(x: Doubles, y: Doubles, resolution: u8) -> Robj {
     List::from_values(res)
         .set_class(vctrs_class())
         .unwrap()
+        .clone()
 }
 
 // boundary for a single hex
-fn h3_boundary_(x: Robj) -> Robj {
-    let h3 = <&H3>::from_robj(&x).unwrap();
+fn h3_boundary_(x: Robj) -> List {
+    let h3 = <&H3>::try_from(&x).unwrap();
     let boundary = h3.index.boundary();
 
     let mut coords = boundary
@@ -79,7 +81,7 @@ fn h3_boundary_(x: Robj) -> Robj {
 
     let m = RMatrix::new_matrix(coords.len(), 2, |r, c| coords[r][c]);
 
-    list![m].set_class(["XY", "POLYGON", "sfg"]).unwrap()
+    list![m].set_class(["XY", "POLYGON", "sfg"]).unwrap().clone()
 }
 
 // vectorized but prettier
@@ -90,7 +92,7 @@ fn h3_boundaries_(x: List) -> List {
             if robj.is_null() {
                 Rfloat::na().into_robj()
             } else {
-                h3_boundary_(robj)
+                h3_boundary_(robj).into_robj()
             }
         })
         .collect::<Vec<Robj>>();

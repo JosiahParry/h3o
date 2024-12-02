@@ -1,6 +1,6 @@
 Package: h3o
 Title: H3 Geospatial Indexing System
-Version: 0.2.2
+Version: 0.2.3
 Authors@R: 
     person("Josiah", "Parry", , "josiah.parry@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-9910-865X"))
@@ -9,8 +9,8 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 Language: en
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
-SystemRequirements: Cargo (rustc package manager)
+RoxygenNote: 7.3.1
+SystemRequirements: Cargo (Rust's package manager), rustc
 Imports: 
     rlang,
     stats,
@@ -18,4 +18,4 @@ Imports:
 Suggests: 
     sf,
     wk
-Config/rextendr/version: 0.3.1.9000
+Config/rextendr/version: 0.3.1.9001

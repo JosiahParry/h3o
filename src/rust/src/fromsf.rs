@@ -1,7 +1,6 @@
 use extendr_api::prelude::*;
 
 use sfconversions::fromsf::sfc_to_geometry;
-
 use h3o::geom::ToCells;
 use h3o::geom::{PolyfillConfig, ContainmentMode};
 
@@ -10,7 +9,6 @@ use crate::createh3::match_resolution;
 use crate::h3::*;
 
 use rayon::prelude::*;
-
 use geo_types::Geometry;
 
 fn geometry_to_cells(x: Geometry, containment: PolyfillConfig) -> Vec<H3> {
@@ -41,6 +39,7 @@ fn sfc_to_cells_(x: List, resolution: i32, containment: &str) -> List {
     let x = sfc_to_geometry(x);
 
     let res = x.into_par_iter()
+        .with_min_len(4096)
         .map(|xi| {
             match xi {
                 Some(xi) => geometry_to_cells(xi, poly_config),
@@ -50,9 +49,9 @@ fn sfc_to_cells_(x: List, resolution: i32, containment: &str) -> List {
         .collect::<Vec<Vec<H3>>>();
 
     let res = res.into_iter().map(|xi| {
-        List::from_values(xi).set_class(vctrs_class()).unwrap()
+        List::from_values(xi).set_class(vctrs_class()).unwrap().clone()
     })
-    .collect::<Vec<Robj>>();
+    .collect::<Vec<List>>();
 
     List::from_values(res)
 }

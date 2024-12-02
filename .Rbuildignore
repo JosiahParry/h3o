@@ -5,3 +5,8 @@
 ^dev$
 ^docs$
 ^LICENSE\.md$
+^src/rust/vendored$
+^src/rust/vendor$
+^src/\.cargo$
+^src/Makevars$
+^src/Makevars\.win$

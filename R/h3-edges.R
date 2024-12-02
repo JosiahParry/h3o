@@ -3,18 +3,36 @@
 # DONE fn h3_edges_pairwise_;
 # DONE fn h3_edges_sparse_;
 # DONE fn is_valid_edge_;
-# fn get_directed_origin_;
-# fn get_directed_destination_;
-# fn get_directed_cells_;
+# DONE fn get_directed_origin_;
+# DONE fn get_directed_destination_;
+# DONE fn get_directed_cells_;
 # DONE fn h3_edges_;
 # DONE fn edge_boundary_;
 
 #' H3 index neighbors
-#'
+#' 
+#' Test if two H3 cells are neighbors. 
+#' 
 #' @param x an `H3` vector.
 #' @param y and `H3` vector.
 #' @export
 #' @rdname is_nb
+#' @returns 
+#' `is_nb_pairwise()` returns a logical vector wheraas `is_nb_sparse()` returns 
+#' a list with logical vector elements.
+#' 
+#' @examples
+#' cells_ids <-c(
+#'   "85e22da7fffffff", "85e35ad3fffffff", 
+#'   "85e22daffffffff", "85e35adbfffffff", 
+#'   "85e22db7fffffff", "85e35e6bfffffff",
+#'   "85e22da3fffffff"
+#' ) 
+#' 
+#' cells <- h3o::h3_from_strings(cells_ids)
+#' 
+#' is_nb_pairwise(cells, rev(cells))
+#' is_nb_sparse(cells, cells)
 is_nb_pairwise <- function(x, y) {
   stopifnot(is_h3(x), is_h3(y))
   is_nb_pairwise_(x, y)
@@ -52,7 +70,49 @@ is_nb_sparse <- function(x, y) {
 #' - `h3_edge_origin()`: returns a vector of `H3Edge` origin cells
 #' - `h3_edge_destination()`: returns a vector of `H3Edge` destination cells
 #' @rdname edges
+#' @returns 
+#' See details.
 #' @export
+#' @examples
+#' # create an H3 cell
+#' x <- h3_from_xy(-122, 38, 5)
+#' 
+#' # find all edges and flatten
+#' edges <- h3_edges(x) |> 
+#'   flatten_edges()
+#' 
+#' # check if they are all edges
+#' is_edge(edges)
+#' 
+#' # check if valid edge strings
+#' is_valid_edge(c("115e22da7fffffff", "abcd"))
+#' 
+#' # get the origin cell of the edge
+#' h3_edge_origin(edges)
+#' 
+#' # get the destination of the edge
+#' h3_edge_destination(edges)
+#' 
+#' # get both origin and destination cells
+#' h3_edge_cells(edges)
+#' 
+#' # create edges from strings
+#' h3_edges_from_strings(c("115e22da7fffffff", "abcd"))
+#' 
+#' # create a vector of cells
+#' cells_ids <-c(
+#'   "85e22da7fffffff", "85e35ad3fffffff", 
+#'   "85e22daffffffff", "85e35adbfffffff", 
+#'   "85e22da3fffffff"
+#' ) 
+#' 
+#' cells <- h3o::h3_from_strings(cells_ids)
+#' 
+#' # find shared edges between the two pairwise
+#' h3_shared_edge_pairwise(cells, rev(cells))
+#' 
+#' # get the sparse shared eddge. Finds all possible shared edges.
+#' h3_shared_edge_sparse(cells, cells)
 h3_edges <- function(x, flat = FALSE) {
   stopifnot(is_h3(x))
   res <- h3_edges_(x)

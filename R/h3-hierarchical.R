@@ -33,6 +33,7 @@
 #' get_children_at(h3, 999, 10)
 #' @export
 #' @rdname hierarchy
+#' @returns See details.
 get_parents <- function(x, resolution) {
   stopifnot(is_h3(x))
   if (resolution < 0 || resolution > 15)

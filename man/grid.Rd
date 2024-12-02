@@ -33,6 +33,9 @@ grid_local_ij(x, y)
 
 \item{y}{an \code{H3} vector.}
 }
+\value{
+See details.
+}
 \description{
 Functions used to traverse the H3 grid.
 }

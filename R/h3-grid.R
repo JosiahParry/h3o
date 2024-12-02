@@ -29,6 +29,9 @@
 #' grid_local_ij(h3, rev(h3))
 #' @export
 #' @rdname grid
+#' @returns
+#' 
+#' See details.
 grid_disk <- function(x, k = 1, safe = TRUE) {
   stopifnot(is_h3(x))
   switch(

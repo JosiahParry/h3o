@@ -28,6 +28,9 @@ get_children_at(x, position, resolution)
 
 \item{position}{the integer position in the ordered set of cells.}
 }
+\value{
+See details.
+}
 \description{
 Functions used to traverse the hierarchy of H3 grids.
 }

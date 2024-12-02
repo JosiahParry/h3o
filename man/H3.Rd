@@ -36,6 +36,9 @@ is_h3(x)
 
 \item{...}{unused.}
 }
+\value{
+See details.
+}
 \description{
 Create H3 indices from \code{sfc} objects, vectors of x and y coordinates, or H3 string IDs.
 }

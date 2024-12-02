@@ -6,7 +6,6 @@
 # This file was created with the following call:
 #   .Call("wrap__make_h3o_wrappers", use_symbols = TRUE, package_name = "h3o")
 
-#' @docType package
 #' @usage NULL
 #' @useDynLib h3o, .registration = TRUE
 NULL
@@ -41,6 +40,25 @@ sfc_to_cells_ <- function(x, resolution, containment) .Call(wrap__sfc_to_cells_,
 #'
 #' @export
 #' @rdname inspection
+#' @examples
+#' cells_ids <-c(
+#'     "85e22da7fffffff", "85e35ad3fffffff", 
+#'     "85e22daffffffff", "85e35adbfffffff", 
+#'     "85e22db7fffffff", "85e35e6bfffffff",
+#'     "85e22da3fffffff"
+#'   ) 
+#'   
+#' cells <- h3o::h3_from_strings(cells_ids)
+#' 
+#' h3_resolution(cells)
+#' h3_base_cell(cells)
+#' is_valid_h3(c("85e22db7fffffff", NA, "oopsies"))
+#' is_res_class_iii(cells)
+#' is_res_class_iii(h3_from_xy(0, 0, 10))
+#' is_pentagon(h3_from_strings("08FD600000000000"))
+#' get_face_count(cells)
+#' @returns
+#' See details.
 h3_resolution <- function(x) .Call(wrap__h3_resolution, x)
 
 #' @export
@@ -55,7 +73,9 @@ is_valid_h3 <- function(x) .Call(wrap__is_valid_h3, x)
 #' @rdname inspection
 is_res_class_iii <- function(x) .Call(wrap__is_res_class_iii, x)
 
-is_hexagon <- function(x) .Call(wrap__is_hexagon, x)
+#' @export
+#' @rdname inspection
+is_pentagon <- function(x) .Call(wrap__is_pentagon, x)
 
 #' @export
 #' @rdname inspection

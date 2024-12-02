@@ -30,6 +30,7 @@
 #' }
 #'
 #' @export
+#' @returns An H3 vector.
 sfc_to_cells <- function(x, resolution, containment = "intersect") {
   match.arg(containment, c("intersect", "centroid", "boundary"))
   if (!inherits(x, c("sfc_POLYGON", "sfc_MULTIPOLYGON"))) {

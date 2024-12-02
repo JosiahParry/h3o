@@ -11,6 +11,8 @@
 #' y <- uncompact_cells(x, 5)[[1]]
 #' z <- compact_cells(y)
 #' all.equal(x, z)
+#' @returns 
+#' An `H3` vector.
 compact_cells <- function(x) {
   stopifnot(is_h3(x))
   compact_cells_(stats::na.omit(unique(x)))

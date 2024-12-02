@@ -14,6 +14,9 @@ uncompact_cells(x, resolution)
 
 \item{resolution}{a scalar integer representing the grid resolution in the range [0, 15].}
 }
+\value{
+An \code{H3} vector.
+}
 \description{
 Reduce a set of H3 indices of the same resolution to the minimum number of H3 indices of
 varying resolution that entirely covers the input area.

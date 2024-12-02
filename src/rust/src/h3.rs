@@ -31,7 +31,7 @@ fn h3_to_strings(x: List) -> Strings {
     let res = x.into_iter()
         .map(|(_, robj)| {
             //
-            let indx = <&H3>::from_robj(&robj);
+            let indx = <&H3>::try_from(&robj);
             match indx {
                 Ok(indx) => Rstr::from_string(&indx.index.to_string()),
                 Err(_) => Rstr::na(),

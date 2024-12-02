@@ -45,6 +45,9 @@ h3_edge_destination(x)
 
 \item{...}{unused.}
 }
+\value{
+See details.
+}
 \description{
 Functions to create or work with \code{H3Edge} vectors. See \code{Details} for further details.
 }
@@ -65,4 +68,45 @@ a valid edge ID.
 \item \code{h3_edge_origin()}: returns a vector of \code{H3Edge} origin cells
 \item \code{h3_edge_destination()}: returns a vector of \code{H3Edge} destination cells
 }
+}
+\examples{
+# create an H3 cell
+x <- h3_from_xy(-122, 38, 5)
+
+# find all edges and flatten
+edges <- h3_edges(x) |> 
+  flatten_edges()
+
+# check if they are all edges
+is_edge(edges)
+
+# check if valid edge strings
+is_valid_edge(c("115e22da7fffffff", "abcd"))
+
+# get the origin cell of the edge
+h3_edge_origin(edges)
+
+# get the destination of the edge
+h3_edge_destination(edges)
+
+# get both origin and destination cells
+h3_edge_cells(edges)
+
+# create edges from strings
+h3_edges_from_strings(c("115e22da7fffffff", "abcd"))
+
+# create a vector of cells
+cells_ids <-c(
+  "85e22da7fffffff", "85e35ad3fffffff", 
+  "85e22daffffffff", "85e35adbfffffff", 
+  "85e22da3fffffff"
+) 
+
+cells <- h3o::h3_from_strings(cells_ids)
+
+# find shared edges between the two pairwise
+h3_shared_edge_pairwise(cells, rev(cells))
+
+# get the sparse shared eddge. Finds all possible shared edges.
+h3_shared_edge_sparse(cells, cells)
 }

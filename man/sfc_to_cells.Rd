@@ -14,6 +14,9 @@ sfc_to_cells(x, resolution, containment = "intersect")
 \item{containment}{default \code{"intersect"}. Must be one of \code{"intersect"},
 \code{"centroid"}, or \code{"boundary"}. See details.}
 }
+\value{
+An H3 vector.
+}
 \description{
 Given a vector of sf geometries (class \code{sfc}) create a list of \code{H3} vectors.
 Each list element contains the vector of H3 cells that cover the geometry.

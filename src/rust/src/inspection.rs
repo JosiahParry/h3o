@@ -21,13 +21,32 @@ use h3o::CellIndex;
 ///
 /// @export
 /// @rdname inspection
+/// @examples
+/// cells_ids <-c(
+///     "85e22da7fffffff", "85e35ad3fffffff", 
+///     "85e22daffffffff", "85e35adbfffffff", 
+///     "85e22db7fffffff", "85e35e6bfffffff",
+///     "85e22da3fffffff"
+///   ) 
+///   
+/// cells <- h3o::h3_from_strings(cells_ids)
+/// 
+/// h3_resolution(cells)
+/// h3_base_cell(cells)
+/// is_valid_h3(c("85e22db7fffffff", NA, "oopsies"))
+/// is_res_class_iii(cells)
+/// is_res_class_iii(h3_from_xy(0, 0, 10))
+/// is_pentagon(h3_from_strings("08FD600000000000"))
+/// get_face_count(cells)
+/// @returns
+/// See details.
 fn h3_resolution(x: List) -> Vec<i32> {
     x.into_iter()
         .map(|(_, x)| {
             if x.is_null() {
                 i32::MIN
             } else {
-                let idx = <&H3>::from_robj(&x);
+                let idx = <&H3>::try_from(&x);
                 match idx {
                     Ok(idx) => idx.index.resolution() as i32,
                     Err(_) => i32::MIN,
@@ -46,7 +65,7 @@ fn h3_base_cell(x: List) -> Vec<i32> {
             if x.is_null() {
                 i32::MIN
             } else {
-                let cell = <&H3>::from_robj(&x);
+                let cell = <&H3>::try_from(&x);
                 match cell {
                     Ok(cell) => u8::from(cell.index.base_cell()) as i32,
                     Err(_) => i32::MIN,
@@ -68,10 +87,16 @@ fn is_valid_h3_(x: &str) -> bool {
 #[extendr]
 /// @export
 /// @rdname inspection
-fn is_valid_h3(x: Vec<String>) -> Vec<bool> {
+fn is_valid_h3(x: Strings) -> Logicals {
     x.into_iter()
-        .map(|x| is_valid_h3_(x.as_str()))
-        .collect::<Vec<bool>>()
+        .map(|x| {
+            if x.is_na() {
+                return Rbool::na()
+            }
+
+            Rbool::from(is_valid_h3_(x.as_str()))
+        })
+        .collect::<Logicals>()
 }
 
 #[extendr]
@@ -80,7 +105,7 @@ fn is_valid_h3(x: Vec<String>) -> Vec<bool> {
 fn is_res_class_iii(x: List) -> Logicals {
     x.into_iter()
         .map(|(_, x)| {
-            let cell = <&H3>::from_robj(&x);
+            let cell = <&H3>::try_from(&x);
 
             match cell {
                 Ok(cell) => Rbool::from_bool(cell.index.resolution().is_class3()),
@@ -91,10 +116,12 @@ fn is_res_class_iii(x: List) -> Logicals {
 }
 
 #[extendr]
-fn is_hexagon(x: List) -> Logicals {
+/// @export
+/// @rdname inspection
+fn is_pentagon(x: List) -> Logicals {
     x.into_iter()
         .map(|(_, x)| {
-            let cell = <&H3>::from_robj(&x);
+            let cell = <&H3>::try_from(&x);
 
             match cell {
                 Ok(cell) => Rbool::from_bool(cell.index.is_pentagon()),
@@ -108,17 +135,17 @@ fn is_hexagon(x: List) -> Logicals {
 #[extendr]
 /// @export
 /// @rdname inspection
-fn get_face_count(x: List) -> Vec<i32> {
+fn get_face_count(x: List) -> Integers {
     x.into_iter()
         .map(|(_, x)| {
-            let cell = <&H3>::from_robj(&x);
+            let cell = <&H3>::try_from(&x);
 
             match cell {
-                Ok(cell) => cell.index.max_face_count() as i32,
-                Err(_) => i32::MIN,
+                Ok(cell) => Rint::from(cell.index.max_face_count() as i32),
+                Err(_) => Rint::na(),
             }
         })
-        .collect::<Vec<i32>>()
+        .collect::<Integers>()
 }
 
 extendr_module! {
@@ -127,6 +154,6 @@ extendr_module! {
     fn h3_base_cell;
     fn is_valid_h3;
     fn is_res_class_iii;
-    fn is_hexagon;
+    fn is_pentagon;
     fn get_face_count;
 }
