@@ -200,7 +200,10 @@ fn local_ij_(x: List, y: List) -> List {
 
                 let res = x.to_local_ij(y);
                 match res {
-                    Ok(res) => (res.i(), res.j()),
+                    Ok(res) => {
+                        let c = res.coord;
+                        (c.i, c.j)
+                    },
                     Err(_) => (i32::MIN, i32::MIN),
                 }
             }

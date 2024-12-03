@@ -30,6 +30,7 @@ fn sfc_to_cells_(x: List, resolution: i32, containment: &str) -> List {
         "boundary" => ContainmentMode::ContainsBoundary,
         "centroid" => ContainmentMode::ContainsCentroid,
         "intersect" => ContainmentMode::IntersectsBoundary,
+        "covers" => ContainmentMode::Covers,
         _ => ContainmentMode::ContainsBoundary
     };
 

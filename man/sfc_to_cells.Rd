@@ -29,6 +29,7 @@ The \href{https://docs.rs/h3o/0.4.0/h3o/geom/enum.ContainmentMode.html}{Containm
 \item \code{"centroid"} returns every cell whose centroid are contained inside of a polygon. This is the fastest option but may not cover the entire polygon.
 \item \code{"boundary"} this returns the cells which are completely contained by the polygon. Much of a polygon might not be covered using this approach.
 \item \code{"intersect"} ensures that a polygon is entirely covered. If an H3 cell comes in contact with the polygon it will be returned. This is the default.
+\item \code{"contains"} behaves the same as \code{"intersect"}, but also handles the case where the geometry is being covered by a cell without intersecting with its boundaries. In such cases, the covering cell is returned.
 }
 }
 \examples{

@@ -16,7 +16,7 @@
 #' - `"centroid"` returns every cell whose centroid are contained inside of a polygon. This is the fastest option but may not cover the entire polygon.
 #' - `"boundary"` this returns the cells which are completely contained by the polygon. Much of a polygon might not be covered using this approach.
 #' - `"intersect"` ensures that a polygon is entirely covered. If an H3 cell comes in contact with the polygon it will be returned. This is the default.
-#'
+#'- `"contains"` behaves the same as `"intersect"`, but also handles the case where the geometry is being covered by a cell without intersecting with its boundaries. In such cases, the covering cell is returned.
 #'
 #' @examples
 #' if (interactive() && rlang::is_installed("sf")) {
@@ -32,7 +32,7 @@
 #' @export
 #' @returns An H3 vector.
 sfc_to_cells <- function(x, resolution, containment = "intersect") {
-  match.arg(containment, c("intersect", "centroid", "boundary"))
+  match.arg(containment, c("intersect", "centroid", "boundary", "covers"))
   if (!inherits(x, c("sfc_POLYGON", "sfc_MULTIPOLYGON"))) {
     rlang::abort("`x` must be of class `sfc_POLYGON` or `sfc_MULTIPOLYGON`")
   } else if (!(resolution >= 0 && resolution <= 15)) {

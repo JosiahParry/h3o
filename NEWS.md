@@ -1,5 +1,6 @@
 # development 
 
+- `"covers"` containment mode is now supported
 - `to_cells()` is renamed `sfc_to_cells()`
 - h3o dependency is bumped to version 0.4.0
 - `sfc_to_cells()` gets a new argument `containment` based off of the [`ContainmentMode` enum](https://docs.rs/h3o/0.4.0/h3o/geom/enum.ContainmentMode.html) 
