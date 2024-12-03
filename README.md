@@ -1,24 +1,22 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+
 
 # h3o
 
 <!-- badges: start -->
-
 [![R-CMD-check](https://github.com/JosiahParry/h3o/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/JosiahParry/h3o/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-h3o is a system-dependency free package to interact with the H3
-Geospatial Indexing system by Uber. h3o utilizes the Rust library h3o
-with is a pure rust implementation of H3 and does not link or use Uber’s
-H3 C library. h3o R interface is powered by
-[extendr](https://extendr.github.io/) and should be able to compile on
-any machine.
+h3o is a system-dependency free package to interact with the H3 Geospatial Indexing system by Uber. h3o utilizes the Rust library h3o with is a pure rust implementation of H3 and does not link or use Uber's H3 C library. h3o R interface is powered by [extendr](https://extendr.github.io/) and should be able to compile on any machine. 
 
 ## Installation
 
-You can install the development version of h3o from
-[GitHub](https://github.com/) with:
+You can install the development version of h3o from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("remotes")
@@ -27,8 +25,8 @@ remotes::install_github("JosiahParry/h3o")
 
 ## Example
 
-To illustrate the basic usage, we can first create an sf object of
-random points.
+To illustrate the basic usage, we can first create an sf object of random points. 
+
 
 ``` r
 pnts <- tibble::tibble(
@@ -39,13 +37,15 @@ pnts <- tibble::tibble(
     coords = c("x", "y"), 
     crs = 4326
   )
+
 ```
 
-h3o utilizes vctrs to create H3 class vectors so that they can work
-seemlessly within a tidyverse workflow.
+h3o utilizes vctrs to create H3 class vectors so that they can work seemlessly within
+a tidyverse workflow. 
 
-h3o is intended to work with the sf package for geometric operations. H3
-vectors can be created from `POINT` geometry columns (`sfc` objects).
+h3o is intended to work with the sf package for geometric operations. 
+H3 vectors can be created from `POINT` geometry columns (`sfc` objects).
+
 
 ``` r
 library(h3o)
@@ -55,26 +55,25 @@ pnts |>
 #> Simple feature collection with 100 features and 1 field
 #> Geometry type: POINT
 #> Dimension:     XY
-#> Bounding box:  xmin: -4.80551 ymin: 40.57655 xmax: 9.958988 ymax: 49.98309
+#> Bounding box:  xmin: -4.919497 ymin: 40.25333 xmax: 9.98528 ymax: 49.9593
 #> Geodetic CRS:  WGS 84
 #> # A tibble: 100 × 2
 #>                 geometry              h3
 #>  *           <POINT [°]>            <H3>
-#>  1 (-0.8983678 46.42658) 85186a8bfffffff
-#>  2   (1.884723 41.12234) 853946a7fffffff
-#>  3  (-4.056968 44.74521) 85185daffffffff
-#>  4   (8.173147 49.37186) 851f85b7fffffff
-#>  5   (3.206761 41.95335) 8539451bfffffff
-#>  6   (4.490571 43.27424) 85396eaffffffff
-#>  7  (-2.247376 43.43344) 85184b83fffffff
-#>  8  (-2.228073 46.82696) 85184577fffffff
-#>  9    (8.85834 47.34941) 851f8ecffffffff
-#> 10   (8.744089 47.93225) 851f8177fffffff
+#>  1   (2.785472 46.45577) 851f94cffffffff
+#>  2   (5.259132 44.97223) 851f930ffffffff
+#>  3   (8.734851 48.01969) 851f810ffffffff
+#>  4  (-3.751716 49.25705) 85187193fffffff
+#>  5   (9.780378 44.62055) 851ea6cbfffffff
+#>  6    (7.87759 47.21568) 851f8303fffffff
+#>  7   (6.871837 42.57346) 851eb6dbfffffff
+#>  8   (4.450498 46.81359) 851f951bfffffff
+#>  9 (0.01801486 43.70956) 8539668bfffffff
+#> 10    (8.864163 44.3646) 851f9b0bfffffff
 #> # ℹ 90 more rows
 ```
+Additionally, H3 vectors also have an `st_as_sfc()` method which lets us convert vectors of H3 cell indexes into `POLYGON`s. 
 
-Additionally, H3 vectors also have an `st_as_sfc()` method which lets us
-convert vectors of H3 cell indexes into `POLYGON`s.
 
 ``` r
 h3_cells <- pnts |> 
@@ -88,11 +87,14 @@ h3_cells <- pnts |>
 plot(sf::st_geometry(h3_cells))
 ```
 
-<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+<div class="figure">
+<img src="man/figures/README-unnamed-chunk-3-1.png" alt="plot of chunk unnamed-chunk-3" width="100%" />
+<p class="caption">plot of chunk unnamed-chunk-3</p>
+</div>
 
-H3 cell centroids can be returned using `h3_to_points()`. If `sf` is
-avilable the results will be returned as an `sfc` (sf column) object.
-Otherwise it will return a list of `sfg` (sf geometries).
+H3 cell centroids can be returned using `h3_to_points()`. If `sf` is avilable the results will
+be returned as an `sfc` (sf column) object. Otherwise it will return a list of `sfg` (sf geometries). 
+
 
 ``` r
 # fetch h3 column
@@ -106,93 +108,95 @@ plot(sf::st_geometry(h3_cells))
 plot(h3_centers, pch = 16, add = TRUE, col = "black")
 ```
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+<div class="figure">
+<img src="man/figures/README-unnamed-chunk-4-1.png" alt="plot of chunk unnamed-chunk-4" width="100%" />
+<p class="caption">plot of chunk unnamed-chunk-4</p>
+</div>
+
 
 ## sf compatibility
 
-h3o was designed with sf in mind. H3 is a geospatial indexing system so
-it is important to be able to go back and from from H3 and sf objects.
-H3 object can be created from sfc objects and vice versa.sfc objects can
-also be created using the `sf::sf_as_sfc()` method for `H3` or `H3Edge`
-vectors.
+h3o was designed with sf in mind. H3 is a geospatial indexing system so it is important to be able to go back and from from H3 and sf objects. H3 object can be created from sfc objects and vice versa.sfc objects can also be created using the `sf::sf_as_sfc()` method for `H3` or `H3Edge` vectors.
 
-`H3Edge` vectors represent the boundaries of H3 cells. They can be
-created with `h3_edges()`, `h3_shared_edge_pairwise()`, and
-`h3_shared_edge_sparse()`.
+`H3Edge` vectors represent the boundaries of H3 cells. They can be created with `h3_edges()`, `h3_shared_edge_pairwise()`, and `h3_shared_edge_sparse()`.
+
 
 ``` r
 cell_edges <- h3_edges(h3s[1:3])
 cell_edges
 #> [[1]]
 #> <H3Edge[6]>
-#> [1] 114186a9ffffffff 124186a9ffffffff 134186a9ffffffff 144186a9ffffffff
-#> [5] 154186a9ffffffff 164186a9ffffffff
+#> [1] 1141f94dffffffff 1241f94dffffffff 1341f94dffffffff 1441f94dffffffff
+#> [5] 1541f94dffffffff 1641f94dffffffff
 #> 
 #> [[2]]
 #> <H3Edge[6]>
-#> [1] 1143946bffffffff 1243946bffffffff 1343946bffffffff 1443946bffffffff
-#> [5] 1543946bffffffff 1643946bffffffff
+#> [1] 1141f931ffffffff 1241f931ffffffff 1341f931ffffffff 1441f931ffffffff
+#> [5] 1541f931ffffffff 1641f931ffffffff
 #> 
 #> [[3]]
 #> <H3Edge[6]>
-#> [1] 114185dbffffffff 124185dbffffffff 134185dbffffffff 144185dbffffffff
-#> [5] 154185dbffffffff 164185dbffffffff
+#> [1] 1141f811ffffffff 1241f811ffffffff 1341f811ffffffff 1441f811ffffffff
+#> [5] 1541f811ffffffff 1641f811ffffffff
 ```
 
-We’ve created a list of each cell’s edges. We can flatten them using
-`flatten_edges()`.
+We've created a list of each cell's edges. We can flatten them using `flatten_edges()`.
+
 
 ``` r
 cell_edges <- flatten_edges(cell_edges)
 cell_edges
 #> <H3Edge[18]>
-#>  [1] 114186a9ffffffff 124186a9ffffffff 134186a9ffffffff 144186a9ffffffff
-#>  [5] 154186a9ffffffff 164186a9ffffffff 1143946bffffffff 1243946bffffffff
-#>  [9] 1343946bffffffff 1443946bffffffff 1543946bffffffff 1643946bffffffff
-#> [13] 114185dbffffffff 124185dbffffffff 134185dbffffffff 144185dbffffffff
-#> [17] 154185dbffffffff 164185dbffffffff
+#>  [1] 1141f94dffffffff 1241f94dffffffff 1341f94dffffffff 1441f94dffffffff
+#>  [5] 1541f94dffffffff 1641f94dffffffff 1141f931ffffffff 1241f931ffffffff
+#>  [9] 1341f931ffffffff 1441f931ffffffff 1541f931ffffffff 1641f931ffffffff
+#> [13] 1141f811ffffffff 1241f811ffffffff 1341f811ffffffff 1441f811ffffffff
+#> [17] 1541f811ffffffff 1641f811ffffffff
 ```
 
 These can be cast to sfc objects using its `st_as_sfc()` method.
+
 
 ``` r
 sf::st_as_sfc(cell_edges)
 #> Geometry set for 18 features 
 #> Geometry type: LINESTRING
 #> Dimension:     XY
-#> Bounding box:  xmin: -4.256158 ymin: 40.84516 xmax: 2.07735 ymax: 46.73547
+#> Bounding box:  xmin: 2.395949 ymin: 44.79977 xmax: 8.827172 ymax: 48.382
 #> Geodetic CRS:  WGS 84
 #> First 5 geometries:
-#> LINESTRING (-0.7938494 46.27618, -0.4911588 46....
-#> LINESTRING (-0.9919804 46.66586, -1.044524 46.4...
-#> LINESTRING (-1.044524 46.43587, -0.7938494 46.2...
-#> LINESTRING (-0.4369869 46.5752, -0.6871241 46.7...
-#> LINESTRING (-0.4911588 46.3459, -0.4369869 46.5...
+#> LINESTRING (2.948007 46.49839, 3.012846 46.72299)
+#> LINESTRING (2.395949 46.5394, 2.63995 46.40685)
+#> LINESTRING (2.63995 46.40685, 2.948007 46.49839)
+#> LINESTRING (2.767743 46.85578, 2.458902 46.76373)
+#> LINESTRING (3.012846 46.72299, 2.767743 46.85578)
 ```
 
-Additionally, you can get the vertexes of H3 cell indexes using
-`h3_to_vertexes()` which returns an `sfc_MULTIPOINT`.
+Additionally, you can get the vertexes of H3 cell indexes using `h3_to_vertexes()` which returns an `sfc_MULTIPOINT`.
+
 
 ``` r
 h3_to_vertexes(h3s)
 #> Geometry set for 100 features 
 #> Geometry type: MULTIPOINT
 #> Dimension:     XY
-#> Bounding box:  xmin: -5.149019 ymin: 40.39257 xmax: 10.15344 ymax: 50.21131
+#> Bounding box:  xmin: -5.510812 ymin: 39.78466 xmax: 10.22827 ymax: 50.12141
 #> Geodetic CRS:  WGS 84
 #> First 5 geometries:
-#> MULTIPOINT ((-0.6871241 46.73547), (-0.9919804 ...
-#> MULTIPOINT ((1.563896 41.22113), (1.508041 40.9...
-#> MULTIPOINT ((-3.913195 45.05064), (-4.214897 44...
-#> MULTIPOINT ((7.743345 49.38758), (7.659308 49.1...
-#> MULTIPOINT ((3.125022 42.13971), (3.063423 41.9...
+#> MULTIPOINT ((2.458902 46.76373), (2.395949 46.5...
+#> MULTIPOINT ((4.818449 45.17055), (4.748771 44.9...
+#> MULTIPOINT ((8.243388 48.3043), (8.158854 48.08...
+#> MULTIPOINT ((-3.697215 49.31703), (-4.01933 49....
+#> MULTIPOINT ((9.666362 44.93792), (9.580722 44.7...
 ```
 
-## Bench marks:
 
-Since h3o is written in Rust, it is very fast.
+## Bench marks: 
 
-Creating polygons
+Since h3o is written in Rust, it is very fast. 
+
+Creating polygons 
+
 
 ``` r
 h3_strs <- as.character(h3s)
@@ -203,11 +207,32 @@ bench::mark(
 #> # A tibble: 2 × 6
 #>   expression      min   median `itr/sec` mem_alloc `gc/sec`
 #>   <bch:expr> <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-#> 1 h3o        292.17µs 312.24µs     3111.   26.84KB     36.9
-#> 2 h3jsr        7.51ms   7.94ms      124.    3.02MB     27.5
+#> 1 h3o         415.9µs 466.91µs     1985.    9.85KB     0   
+#> 2 h3jsr        7.39ms   8.16ms      118.   77.18KB     4.36
+```
+
+Converting polygons to H3 cells: 
+
+
+``` r
+nc <- sf::st_read(system.file("gpkg/nc.gpkg", package = "sf"), quiet = TRUE) |> 
+  sf::st_transform(4326) |> 
+  sf::st_geometry()
+
+bench::mark(
+  h3o = sfc_to_cells(nc, 5, "centroid"),
+  h3jsr = h3jsr::polygon_to_cells(nc, 5),
+  check = FALSE
+)
+#> # A tibble: 2 × 6
+#>   expression      min   median `itr/sec` mem_alloc `gc/sec`
+#>   <bch:expr> <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
+#> 1 h3o          4.14ms   4.63ms     214.        6KB        0
+#> 2 h3jsr       28.13ms  29.28ms      33.9    18.6KB        0
 ```
 
 Converting points to cells
+
 
 ``` r
 bench::mark(
@@ -218,11 +243,12 @@ bench::mark(
 #> # A tibble: 2 × 6
 #>   expression      min   median `itr/sec` mem_alloc `gc/sec`
 #>   <bch:expr> <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-#> 1 h3o        108.44µs 127.84µs     5916.      848B     11.4
-#> 2 h3jsr        2.06ms   2.55ms      373.    1.03MB     12.9
+#> 1 h3o        140.14µs 168.88µs     4951.      848B     2.20
+#> 2 h3jsr        2.04ms   2.42ms      400.    55.6KB     2.27
 ```
 
 Retrieve edges
+
 
 ``` r
 bench::mark(
@@ -233,11 +259,12 @@ bench::mark(
 #> # A tibble: 2 × 6
 #>   expression      min   median `itr/sec` mem_alloc `gc/sec`
 #>   <bch:expr> <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-#> 1 h3o         602.5µs 682.36µs     1054.      848B     9.82
-#> 2 h3jsr         1.8ms   2.12ms      425.    71.4KB    16.2
+#> 1 h3o        762.89µs 875.99µs      995.      848B     2.55
+#> 2 h3jsr        1.79ms   2.37ms      381.    46.1KB     0
 ```
 
 Get origins and destinations from edges.
+
 
 ``` r
 # get edges for a single location
@@ -253,6 +280,7 @@ bench::mark(
 #> # A tibble: 2 × 6
 #>   expression      min   median `itr/sec` mem_alloc `gc/sec`
 #>   <bch:expr> <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-#> 1 h3o          19.6µs   22.9µs    34920.    12.7KB     10.5
-#> 2 h3jsr       471.4µs  543.2µs     1787.    34.8KB     22.6
+#> 1 h3o          23.5µs   26.8µs    35917.        0B    11.9 
+#> 2 h3jsr       458.3µs    505µs     1782.    1.36KB     2.05
 ```
+

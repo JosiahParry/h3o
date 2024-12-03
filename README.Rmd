@@ -134,6 +134,20 @@ bench::mark(
 )
 ```
 
+Converting polygons to H3 cells: 
+
+```{r}
+nc <- sf::st_read(system.file("gpkg/nc.gpkg", package = "sf"), quiet = TRUE) |> 
+  sf::st_transform(4326) |> 
+  sf::st_geometry()
+
+bench::mark(
+  h3o = sfc_to_cells(nc, 5, "centroid"),
+  h3jsr = h3jsr::polygon_to_cells(nc, 5),
+  check = FALSE
+)
+```
+
 Converting points to cells
 
 ```{r}
